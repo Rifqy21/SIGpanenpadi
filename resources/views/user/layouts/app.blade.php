@@ -106,6 +106,15 @@
             });
         </script>
     @endif
+    @if (session('info'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                title: 'Informasi',
+                body: '{{ session('info') }}'
+            });
+        </script>
+    @endif
     @if (session('error'))
         <script>
             $(document).Toasts('create', {

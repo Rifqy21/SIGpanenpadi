@@ -3,9 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -49,5 +49,10 @@ class User extends Authenticatable
     public function panen()
     {
         return $this->hasMany(panen::class, 'id_petani', 'id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id', 'id');
     }
 }

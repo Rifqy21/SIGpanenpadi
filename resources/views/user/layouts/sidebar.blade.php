@@ -39,10 +39,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('aduan') }}" class="nav-link {{ request()->is('aduan') ? 'active' : '' }}">
-                        <i class="nav-icon far fa-envelope"></i>
+                    <a href="{{ route('chat.index') }}" class="nav-link {{ request()->is('chat') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-comments"></i>
                         <p>
-                            Mail Box
+                            Chat Dengan Admin
                         </p>
                     </a>
                 </li>

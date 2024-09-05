@@ -41,10 +41,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin') }}" class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Laporan Tahunan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('aduan') }}" class="nav-link {{ request()->is('aduan') ? 'active' : '' }}">
                         <i class="nav-icon far fa-envelope"></i>
                         <p>
-                            Mail Box
+                            Aduan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.chat.index') }}" class="nav-link {{ request()->is('admin/chat') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-comments"></i>
+                        <p>
+                            Chat
                         </p>
                     </a>
                 </li>

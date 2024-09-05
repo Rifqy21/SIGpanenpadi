@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AuthentificationController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatControllers;
+use App\Http\Controllers\AdminChatController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\UserDashboardController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AuthentificationController;
 
 
 // group route with guest middleware
@@ -20,6 +22,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/validateRole', [AuthentificationController::class, 'validateRole'])->name('validateRole');
+    Route::get('/chat', [ChatControllers::class, 'index'])->name('chat.index');
+    Route::post('/chat/send', [ChatControllers::class, 'send'])->name('chat.send');
+    Route::get('/chat/messages', [ChatControllers::class, 'messages'])->name('chat.messages');
 });
 
 Route::middleware(['auth', 'user'])->group(function () {
@@ -30,7 +35,6 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/panen/edit/{id}', [UserDashboardController::class, 'edit'])->name('panen.edit');
     Route::put('/panen/update/{id}', [UserDashboardController::class, 'update'])->name('panen.update');
     Route::delete('/panen/delete/{id}', [UserDashboardController::class, 'delete'])->name('panen.delete');
-
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -49,5 +53,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/user/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.user.delete');
 
-
+    Route::get('/admin/chat', [AdminChatController::class, 'index'])->name('admin.chat.index');
+    Route::get('/admin/chat/{userId}', [AdminChatController::class, 'viewConversation'])->name('admin.chat.viewConversation');
+    Route::get('/admin/chat/messages/{userId}', [AdminChatController::class, 'fetchMessage'])->name('admin.chat.fetchMessage');
+    Route::post('/admin/chat/send/{userId}', [AdminChatController::class, 'send'])->name('admin.chat.send');
 });
