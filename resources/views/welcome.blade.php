@@ -14,6 +14,24 @@
     <!-- icon -->
     <script src="https://kit.fontawesome.com/26af10689e.js" crossorigin="anonymous"></script>
 
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet"
+        href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/dist/css/adminlte.min.css') }}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
+
     <!-- Custom CSS -->
     <style>
         body {
@@ -198,7 +216,26 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-6">
-                    <img src="{{ asset('assets/img/landing_page/world.png') }}" class="img-fluid" alt="Peta">
+                    {{-- <img src="{{ asset('assets/img/landing_page/world.png') }}" class="img-fluid" alt="Peta"> --}}
+                    <div class="card-body">
+                        <!-- Map card -->
+                        <div class="card bg-gradient-primary">
+                            <div class="card-header border-0">
+                                <!-- card tools -->
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse"
+                                        title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <!-- /.card-tools -->
+                            </div>
+                            <div class="card-body">
+                                <div id="world-map" style="height: 250px; width: 100%;"></div>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +245,8 @@
     <section class="chart-section bg-light" id="data_panen">
         <div class="container">
             <h3 class="text-center">Produksi Panen</h3>
+
+
             <div class="row">
                 <div class="col-md-12">
                     <canvas id="myChart" height="100"></canvas>
@@ -406,7 +445,63 @@
     <!-- AdminLTE JS -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- ChartJS -->
+    <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
+    <!-- Sparkline -->
+    <script src="{{ asset('assets/plugins/sparklines/sparkline.js') }}"></script>
+    <!-- JQVMap -->
+    <script src="{{ asset('assets/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jqvmap/maps/jquery.vmap.indonesia.js') }}"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+    <!-- daterangepicker -->
+    <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <!-- Summernote -->
+    <script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <!-- overlayScrollbars -->
+    <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('assets/plugins/dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('assets/plugins/dist/js/pages/dashboard.js') }}"></script>
+
     <!-- Custom JS -->
+    <script>
+        $(document).ready(function() {
+            $('#world-map').vectorMap({
+                map: 'indonesia_id', 
+                backgroundColor: 'transparent',
+                regionStyle: {
+                    initial: {
+                        fill: '#c4c4c4',
+                        "fill-opacity": 1,
+                        stroke: 'none',
+                        "stroke-width": 0,
+                        "stroke-opacity": 1
+                    }
+                },
+                series: {
+                    regions: [{
+                        values: {},
+                        scale: ['#C8EEFF', '#0071A4'],
+                        normalizeFunction: 'polynomial'
+                    }]
+                }
+            });
+        });
+    </script>
     <script>
         // Chart.js Example
         const produksi = @json($produksi);
@@ -446,7 +541,6 @@
 
         // Titik-titik koordinat yang sudah ditentukan
         var locations = panen.map(function(panen, index) {
-            console.log(panen.petani);
             return {
                 name: 'Lokasi Panen  ' + panen.name + ' ' + panen.provinsi.nama_provinsi + ' #' + index,
                 latitude: panen.latitude,
@@ -527,6 +621,8 @@
         // Tambahkan event listener untuk perubahan filter provinsi
         provinsi.addEventListener('change', filterPanen);
     </script>
+
+
 
 
 </body>
