@@ -30,6 +30,7 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/panen/edit/{id}', [UserDashboardController::class, 'edit'])->name('panen.edit');
     Route::put('/panen/update/{id}', [UserDashboardController::class, 'update'])->name('panen.update');
     Route::delete('/panen/delete/{id}', [UserDashboardController::class, 'delete'])->name('panen.delete');
+
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -41,4 +42,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/panen/edit/{id}', [AdminDashboardController::class, 'edit'])->name('admin.panen.edit');
     Route::put('/admin/panen/update/{id}', [AdminDashboardController::class, 'update'])->name('admin.panen.update');
     Route::delete('/admin/panen/delete/{id}', [AdminDashboardController::class, 'delete'])->name('admin.panen.delete');
+
+    Route::get('/admin/user/create', [AdminDashboardController::class, 'createUser'])->name('admin.user.create');
+    Route::post('/admin/user/insert', [AdminDashboardController::class, 'insertUser'])->name('admin.user.insert');
+    Route::get('/admin/user/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.user.edit');
+    Route::put('/admin/user/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.user.update');
+    Route::delete('/admin/user/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.user.delete');
+
+
 });

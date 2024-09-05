@@ -47,7 +47,7 @@
         @include('admin.layouts.sidebar')
 
         @yield('content')
-        
+
         <!-- /.footer -->
         @include('admin.layouts.footer')
 
@@ -89,7 +89,36 @@
     <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/plugins/dist/js/adminlte.js') }}"></script>
-
+    <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+    @if (session('success'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-success',
+                title: 'Sukses',
+                body: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'Gagal',
+                body: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Gagal',
+                    body: '{{ $error }}'
+                });
+            @endforeach
+        </script>
+    @endif
     @yield('scripts')
 </body>
 

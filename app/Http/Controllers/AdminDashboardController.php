@@ -15,7 +15,42 @@ class AdminDashboardController extends Controller
         $provinsis = Provinsi::all();
         $panens = panen::all();
         $petanis = User::where('role', 'user')->get();
-        return view('admin.index', compact('provinsis', 'panens', 'petanis'));
+
+        $produksi = 0;
+        $luas = 0;
+        $produktivitas = 0;
+        if (!$panens->isEmpty()) {
+            // count all produksi from panens
+            foreach ($panens as $panen) {
+                $produksi += $panen->produksi;
+            }
+            // count all luas from panens
+            foreach ($panens as $panen) {
+                $luas += $panen->luas_panen;
+            }
+            // count all produktivitas from panens
+            foreach ($panens as $panen) {
+                $produktivitas += $panen->produktivitas;
+            }
+        }
+
+        $bar_data = [];
+        $bar_produktivitas = [];
+        $months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+        if (!$panens->isEmpty()) {
+            foreach ($months as $month) {
+                $bar_data[] =
+                    // $month,
+                    panen::whereMonth('created_at', $month)->sum('produksi');
+            }
+            foreach ($months as $month) {
+                $bar_produktivitas[] =
+                    // $month,
+                    panen::whereMonth('created_at', $month)->sum('produktivitas');
+            }
+        }
+
+        return view('admin.index', compact('provinsis', 'panens', 'petanis', 'produksi', 'luas', 'produktivitas', 'bar_data', 'bar_produktivitas'));
     }
 
     public function aduan()
@@ -25,7 +60,11 @@ class AdminDashboardController extends Controller
 
     public function createDataPanen()
     {
-        return view('admin.panen.create');
+        $provinsis = Provinsi::all();
+
+        $petani = User::where('role', 'user')->get();
+
+        return view('admin.panen.create', compact('provinsis', 'petani'));
     }
 
     public function insertDataPanen(Request $request)
@@ -39,6 +78,7 @@ class AdminDashboardController extends Controller
             'produksi' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'petani' => 'required',
         ], [
             'provinsi.required' => 'Provinsi harus diisi',
             'luas.required' => 'Luas harus diisi',
@@ -46,12 +86,11 @@ class AdminDashboardController extends Controller
             'produksi.required' => 'Produksi harus diisi',
             'latitude.required' => 'Latitude harus diisi',
             'longitude.required' => 'Longitude harus diisi',
+            'petani.required' => 'Petani harus diisi',
         ]);
 
-        $user = Auth::user();
-
         $panen = new panen();
-        $panen->id_petani = $user->id;
+        $panen->id_petani = $request->petani;
         $panen->luas_panen = $request->luas;
         $panen->produktivitas = $request->produktivitas;
         $panen->produksi = $request->produksi;
@@ -67,6 +106,7 @@ class AdminDashboardController extends Controller
     {
         $panen = panen::find($id);
         $provinsis = Provinsi::all();
+
         return view('admin.panen.show', compact('panen', 'provinsis'));
     }
 
@@ -74,12 +114,14 @@ class AdminDashboardController extends Controller
     {
         $panen = panen::find($id);
         $provinsis = Provinsi::all();
-        return view('admin.panen.edit', compact('panen', 'provinsis'));
+        $petani = User::where('role', 'user')->get();
+        return view('admin.panen.edit', compact('panen', 'provinsis', 'petani'));
     }
 
     public function update($id, Request $request)
     {
         $request->validate([
+            'petani' => 'required',
             'provinsi' => 'required',
             'luas' => 'required',
             'produktivitas' => 'required',
@@ -87,6 +129,7 @@ class AdminDashboardController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
         ], [
+            'petani.required' => 'Petani harus diisi',
             'provinsi.required' => 'Provinsi harus diisi',
             'luas.required' => 'Luas harus diisi',
             'produktivitas.required' => 'Produktivitas harus diisi',
@@ -96,6 +139,7 @@ class AdminDashboardController extends Controller
         ]);
 
         $panen = panen::find($id);
+        $panen->id_petani = $request->petani;
         $panen->luas_panen = $request->luas;
         $panen->produktivitas = $request->produktivitas;
         $panen->produksi = $request->produksi;
@@ -113,6 +157,77 @@ class AdminDashboardController extends Controller
         $panen->delete();
 
         return redirect()->route('admin')->with('success', 'Data Panen Berhasil Dihapus');
+    }
+
+    public function createUser()
+    {
+        return view('admin.users.create');
+    }
+
+    public function insertUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:6',
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Password harus diisi',
+            'password.confirmed' => 'Password tidak sama',
+            'password.min' => 'Password minimal berisi 6 karakter',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('admin')->with('success', 'User Berhasil Ditambahkan');
+    }
+
+    public function editUser($id, Request $request)
+    {
+        $user = User::find($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function updateUser($id, Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Email tidak valid',
+        ]);
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->route('admin')->with('success', 'User Berhasil Diubah');
+    }
+
+    public function deleteUser($id) {
+        $user = User::find($id);
+
+        // delete data panen apabila ada
+        $panens = panen::where('id_petani', $id)->get();
+        if (!$panens->isEmpty()) {
+            foreach ($panens as $panen) {
+                $panen->delete();
+            }
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin')->with('success', 'User Berhasil Dihapus');
     }
 
 }

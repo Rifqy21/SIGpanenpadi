@@ -157,7 +157,7 @@
                                         <th>Produktivitas (Ku/Ha)</th>
                                         <th>Action</th>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="dataBody">
                                         @foreach ($panens as $panen)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -307,7 +307,7 @@
     <script>
         const dataProduksi = @json($bar_data);
         const bar_produktivitas = @json($bar_produktivitas);
-        
+
 
         var bar_data_new = {
             labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
@@ -341,7 +341,7 @@
             data: barChartData,
             options: barChartOptions
         })
-       
+
         var bar_data_new = {
             labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
                 'Nov', 'Des'
@@ -374,5 +374,47 @@
             data: barChartData,
             options: barChartOptions
         })
+    </script>
+    <script>
+        const search = document.getElementById('search');
+        const provinsi = document.getElementById('provinsi');
+
+        function filterPanen() {
+            const selectedProvinsi = provinsi.value;
+
+            const filteredPanen = panen.filter(p => {
+                // Filter berdasarkan provinsi
+                const matchesProvinsi = selectedProvinsi === 'semua_provinsi' || p.provinsi.id == selectedProvinsi;
+
+
+                // Hanya kembalikan data yang cocok dengan kedua filter
+                return matchesProvinsi;
+            });
+
+            const dataBody = document.getElementById('dataBody');
+            dataBody.innerHTML = '';
+
+            filteredPanen.forEach(p => {
+                const tr = document.createElement('tr');
+
+                // Parse and format the created_at date
+                const date = new Date(p.created_at);
+                const formattedDate = date.toLocaleString(
+                    'en-GB'); // This will give you the date in DD/MM/YYYY format
+
+                tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.provinsi.nama_provinsi}</td>
+            <td>${formattedDate}</td>
+            <td>${p.luas_panen}</td>
+            <td>${p.produksi}</td>
+            <td>${p.produktivitas}</td>
+        `;
+                dataBody.appendChild(tr);
+            });
+        }
+
+        // Tambahkan event listener untuk perubahan filter provinsi
+        provinsi.addEventListener('change', filterPanen);
     </script>
 @endsection

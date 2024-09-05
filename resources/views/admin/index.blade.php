@@ -39,15 +39,15 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
+                                <h3>
+                                    {{ $luas }} <sup>Hektar</sup>
+                                </h3>
 
-                                <p>New Orders</p>
+                                <p>Total Luas Panen</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -55,15 +55,15 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>
+                                    {{ $produksi }} <sup>Ton</sup>
+                                </h3>
 
-                                <p>Bounce Rate</p>
+                                <p>Produksi Panen</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -71,15 +71,15 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>44</h3>
+                                <h3 class="text-white">
+                                    {{ $produktivitas }} <sup>Ku/Ha</sup>
+                                </h3>
 
-                                <p>User Registrations</p>
+                                <p class="text-white">Produktivitas Panen</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -87,20 +87,57 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
+                                <h3>{{ count($petanis) }}</h3>
 
-                                <p>Unique Visitors</p>
+                                <p>Pengguna Terdaftar</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <h1 class="card-title">Data Produksi Panen</h1>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                {{-- <div id="bar-chart" style="height: 300px;"></div> --}}
+                                <div class="chart">
+                                    <canvas id="barChart"
+                                        style="min-height: 300px; height: 300px; max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <h1 class="card-title">Data Produktivitas Panen</h1>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="chart2">
+                                    <canvas id="barChart2"
+                                        style="min-height: 300px; height: 300px; max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Main row -->
                 <div class="row">
                     <div class="col-12">
@@ -114,7 +151,8 @@
                                         <select name="provinsi" id="provinsi" class="form-control">
                                             <option value="semua_provinsi">Semua Provinsi</option>
                                             @foreach ($provinsis as $prov)
-                                                <option value="{{ $prov->id }}">{{ $prov->nama_provinsi }}</option>
+                                                <option value="{{ $prov->nama_provinsi }}">{{ $prov->nama_provinsi }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -141,7 +179,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($panens as $dataPanen)
-                                            <tr>
+                                            <tr id="dataBody">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $dataPanen->petani->name }}</td>
                                                 <td>{{ $dataPanen->provinsi->nama_provinsi }}</td>
@@ -158,7 +196,7 @@
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -183,7 +221,7 @@
                                     </div>
                                     <div class="col-7"></div>
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="#" class="btn btn-primary"> <i class="fas fa-plus"></i> Tambah
+                                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary"> <i class="fas fa-plus"></i> Tambah
                                             Pengguna</a>
                                     </div>
                                 </div>
@@ -194,6 +232,7 @@
                                     <thead>
                                         <th>No</th>
                                         <th>Nama Pengguna</th>
+                                        <th>Email Pengguna</th>
                                         <th>Tanggal Dibuat</th>
                                         <th>Peran</th>
                                         <th>Action</th>
@@ -203,15 +242,16 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $petani->name }}</td>
+                                                <td>{{ $petani->email }}</td>
                                                 <td>{{ $petani->created_at }}</td>
                                                 <td>{{ $petani->role }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-primary">Detail</a>
-                                                    <a href="#" class="btn btn-warning">Edit</a>
-                                                    <form action="#" method="POST" class="d-inline">
+                                                    <a href="{{ route('admin.user.edit', $petani->id) }}" class="btn btn-warning">Edit</a>
+                                                    <form action="{{ route('admin.user.delete', $petani->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -245,16 +285,18 @@
     <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+
     <script>
-        $(function() {
-            $("#example1").DataTable({
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": [{
                         extend: 'copy',
                         exportOptions: {
-                            columns: ':not(:last-child)' // Mengecualikan kolom terakhir (Action)
+                            columns: ':not(:last-child)' // Exclude last column (Action)
                         }
                     },
                     {
@@ -285,13 +327,133 @@
                 "dom": '<"row"<"col-md-6"B><"col-md-6 text-right"f>>' +
                     '<"row"<"col-sm-12"tr>>' +
                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $("#example2").DataTable({
+            });
+
+            // Custom filter for Provinsi
+            $('#provinsi').on('change', function() {
+                var selectedProvinsi = $(this).val();
+                if (selectedProvinsi === 'semua_provinsi') {
+                    table.column(2).search('').draw();
+                } else {
+                    if (selectedProvinsi) {
+                        table.column(2).search('^' + selectedProvinsi + '$', true, false).draw();
+                    } else {
+                        table.column(2).search('').draw();
+                    }
+                }
+            });
+
+            var table2 = $("#example2").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+                "buttons": [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: ':not(:last-child)' // Exclude last column (Action)
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    }
+                ],
+                "dom": '<"row"<"col-md-6"B><"col-md-6 text-right"f>>' +
+                    '<"row"<"col-sm-12"tr>>' +
+                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            });
+
         });
+    </script>
+    <script>
+        const dataProduksi = @json($bar_data);
+        const bar_produktivitas = @json($bar_produktivitas);
+
+
+        var bar_data_new = {
+            labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
+                'Nov', 'Des'
+            ],
+            datasets: [{
+                label: 'Produksi Panen',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: dataProduksi
+            }]
+        }
+
+        var barChartCanvas = $('#barChart').get(0).getContext('2d')
+        var barChartData = jQuery.extend(true, {}, bar_data_new)
+        var temp0 = barChartData
+
+        var barChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            datasetFill: false
+        }
+
+        new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barChartOptions
+        })
+
+        var bar_data_new = {
+            labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
+                'Nov', 'Des'
+            ],
+            datasets: [{
+                label: 'Produktivitas Panen',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: bar_produktivitas
+            }]
+        }
+
+        var barChartCanvas = $('#barChart2').get(0).getContext('2d')
+        var barChartData = jQuery.extend(true, {}, bar_data_new)
+        var temp0 = barChartData
+
+        var barChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            datasetFill: false
+        }
+
+        new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barChartOptions
+        })
     </script>
 @endsection

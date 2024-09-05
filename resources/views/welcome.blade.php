@@ -446,8 +446,9 @@
 
         // Titik-titik koordinat yang sudah ditentukan
         var locations = panen.map(function(panen, index) {
+            console.log(panen.petani);
             return {
-                name: 'Lokasi Panen  ' + panen.provinsi.nama_provinsi + ' #' + index,
+                name: 'Lokasi Panen  ' + panen.name + ' ' + panen.provinsi.nama_provinsi + ' #' + index,
                 latitude: panen.latitude,
                 longitude: panen.longitude
             };

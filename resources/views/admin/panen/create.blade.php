@@ -43,8 +43,21 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form action="{{ route('insertPanen') }}" method="POST">
+                                <form action="{{ route('insertDataPanen') }}" method="POST">
                                     @csrf
+
+                                    <div class="form-group row">
+                                        <label for="petani" class="col-sm-2 col-form-label">Petani</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="petani" name="petani" required>
+                                                <option selected disabled>-- Pilih Petani --</option>
+                                                @foreach ($petani as $p)
+                                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label for="provinsi" class="col-sm-2 col-form-label">Provinsi</label>
                                         <div class="col-sm-10">

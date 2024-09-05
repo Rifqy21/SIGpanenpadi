@@ -43,9 +43,24 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form action="{{ route('panen.update', $panen->id) }}" method="POST">
+                                <form action="{{ route('admin.panen.update', $panen->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
+
+                                    <div class="form-group row">
+                                        <label for="petani" class="col-sm-2 col-form-label">Petani</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="petani" name="petani" required>
+                                                <option selected disabled>-- Pilih Petani --</option>
+                                                @foreach ($petani as $p)
+                                                    <option value="{{ $p->id }}"
+                                                        @if ($p->id == $panen->id_petani) selected @endif>
+                                                        {{ $p->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label for="provinsi" class="col-sm-2 col-form-label">Provinsi</label>
                                         <div class="col-sm-10">
@@ -134,7 +149,6 @@
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script>
-
         const panen = @json($panen);
 
         const latitude = document.getElementById('latitude');

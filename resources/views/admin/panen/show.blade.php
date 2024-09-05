@@ -52,6 +52,14 @@
                                 <form action="{{ route('insertPanen') }}" method="POST">
                                     @csrf
                                     <div class="form-group row">
+                                        <label for="petani" class="col-sm-2 col-form-label">Petani
+                                            </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="petani" name="petani"
+                                                disabled value="{{ $panen->petani->name }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label for="provinsi" class="col-sm-2 col-form-label">Provinsi</label>
                                         <div class="col-sm-10">
                                             <select class="form-control" id="provinsi" name="provinsi" disabled>
