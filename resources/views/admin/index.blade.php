@@ -7,6 +7,8 @@
             float: right !important;
         }
     </style>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 @endsection
 
 @section('content')
@@ -172,6 +174,7 @@
                                         <th>Nama Petani</th>
                                         <th>Nama Provinsi</th>
                                         <th>Tanggal Dibuat</th>
+                                        <th>Terakhir Diupdate</th>
                                         <th>Luas Panen (Ha)</th>
                                         <th>Produksi (Ton)</th>
                                         <th>Produktivitas (Ku/Ha)</th>
@@ -183,7 +186,8 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $dataPanen->petani->name }}</td>
                                                 <td>{{ $dataPanen->provinsi->nama_provinsi }}</td>
-                                                <td>{{ $dataPanen->created_at }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($dataPanen->created_at)) }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($dataPanen->updated_at)) }}</td>
                                                 <td>{{ $dataPanen->luas_panen }}</td>
                                                 <td>{{ $dataPanen->produksi }}</td>
                                                 <td>{{ $dataPanen->produktivitas }}</td>
@@ -196,13 +200,34 @@
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main row -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+
+                                    <h1 class="card-title">Peta Sebaran Lokasi Panen Petani</h1>
+
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div id = "map" style = "width: 100%; height: 800px"></div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -221,7 +246,8 @@
                                     </div>
                                     <div class="col-7"></div>
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary"> <i class="fas fa-plus"></i> Tambah
+                                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary"> <i
+                                                class="fas fa-plus"></i> Tambah
                                             Pengguna</a>
                                     </div>
                                 </div>
@@ -234,6 +260,7 @@
                                         <th>Nama Pengguna</th>
                                         <th>Email Pengguna</th>
                                         <th>Tanggal Dibuat</th>
+                                        <th>Terakhir Diupdate</th>
                                         <th>Peran</th>
                                         <th>Action</th>
                                     </thead>
@@ -243,15 +270,19 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $petani->name }}</td>
                                                 <td>{{ $petani->email }}</td>
-                                                <td>{{ $petani->created_at }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($petani->created_at)) }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($petani->updated_at)) }}</td>
                                                 <td>{{ $petani->role }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-primary">Detail</a>
-                                                    <a href="{{ route('admin.user.edit', $petani->id) }}" class="btn btn-warning">Edit</a>
-                                                    <form action="{{ route('admin.user.delete', $petani->id) }}" method="POST" class="d-inline">
+                                                    <a href="{{ route('admin.user.edit', $petani->id) }}"
+                                                        class="btn btn-warning">Edit</a>
+                                                    <form action="{{ route('admin.user.delete', $petani->id) }}"
+                                                        method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -268,6 +299,8 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
+
+
     </div>
     <!-- /.content-wrapper -->
 @endsection
@@ -285,6 +318,7 @@
     <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -455,5 +489,32 @@
             data: barChartData,
             options: barChartOptions
         })
+    </script>
+    <script>
+        const panen = @json($panens);
+
+        var map = L.map('map').setView([-6.200000, 106.816666], 12); // Pusatkan di Jakarta, Indonesia
+
+        // Tambahkan layer peta
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Titik-titik koordinat yang sudah ditentukan
+        var locations = panen.map(function(panen, index) {
+            return {
+                name: 'Lokasi Panen  ' + panen.name + ' ' + panen.provinsi.nama_provinsi + ' #' + index,
+                latitude: panen.latitude,
+                longitude: panen.longitude
+            };
+        });
+
+        // Tambahkan marker untuk setiap koordinat
+        locations.forEach(function(location) {
+            var lat = location.latitude;
+            var lng = location.longitude;
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup(location.name + '<br>Latitude: ' + lat + '<br>Longitude: ' + lng);
+        });
     </script>
 @endsection

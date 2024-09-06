@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\panen;
 use App\Models\Provinsi;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,19 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Admin Pierson',
             'email' => 'admin@admin.com',
             'password' => bcrypt('asdasd'),
             'role' => 'admin',
-        ]);
-
-        User::factory()->create([
-            'name' => 'Petani Georgie',
-            'email' => 'asd@asd.asd',
-            'password' => bcrypt('asdasd'),
         ]);
 
         // make provinsi seeder
@@ -76,6 +71,9 @@ class DatabaseSeeder extends Seeder
                 'nama_provinsi' => $prov,
             ]);
         }
+
+        panen::factory(100)->create();
+        
 
 
     }

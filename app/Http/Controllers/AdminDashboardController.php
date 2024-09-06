@@ -32,6 +32,10 @@ class AdminDashboardController extends Controller
             foreach ($panens as $panen) {
                 $produktivitas += $panen->produktivitas;
             }
+
+            $panens = panen::join('users', 'panens.id_petani', '=', 'users.id')
+                ->select('panens.*', 'users.name')
+                ->get();
         }
 
         $bar_data = [];
@@ -146,6 +150,7 @@ class AdminDashboardController extends Controller
         $panen->id_provinsi = $request->provinsi;
         $panen->latitude = $request->latitude;
         $panen->longitude = $request->longitude;
+        $panen->updated_at = now();
         $panen->save();
 
         return redirect()->route('admin')->with('success', 'Data Panen Berhasil Diubah');
@@ -184,6 +189,8 @@ class AdminDashboardController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->created_at = now();
+        $user->updated_at = now();
         $user->save();
 
         return redirect()->route('admin')->with('success', 'User Berhasil Ditambahkan');
@@ -209,6 +216,7 @@ class AdminDashboardController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->updated_at = now();
         $user->save();
 
         return redirect()->route('admin')->with('success', 'User Berhasil Diubah');

@@ -49,7 +49,7 @@ class AdminChatController extends Controller
 
     public function viewConversation($userId)
     {
-        $adminId = auth()->id();
+        $adminId = Auth::id();
         $user = User::findOrFail($userId);
         $messages = Message::where(function ($query) use ($userId, $adminId) {
             $query->where('user_id', $userId)->where('admin_id', $adminId)
@@ -61,8 +61,7 @@ class AdminChatController extends Controller
 
     public function fetchMessage($userId)
     {
-        // disable intelephense error
-        $adminId = auth()->id();
+        $adminId = Auth::id();
         $messages = Message::where(function ($query) use ($userId, $adminId) {
             $query->where('user_id', $userId)->where('admin_id', $adminId)
                 ->orWhere('user_id', $adminId)->where('admin_id', $userId)

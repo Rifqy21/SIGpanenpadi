@@ -7,7 +7,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthentificationController;
-
+use App\Http\Controllers\ReportController;
 
 // group route with guest middleware
 Route::get('/logout', [AuthentificationController::class, 'logout'])->name('logout');
@@ -57,4 +57,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/chat/{userId}', [AdminChatController::class, 'viewConversation'])->name('admin.chat.viewConversation');
     Route::get('/admin/chat/messages/{userId}', [AdminChatController::class, 'fetchMessage'])->name('admin.chat.fetchMessage');
     Route::post('/admin/chat/send/{userId}', [AdminChatController::class, 'send'])->name('admin.chat.send');
+
+    Route::get('/admin/report', [ReportController::class, 'index'])->name('admin.report.index');
+    Route::post('/admin/report/generate', [ReportController::class, 'generateLaporan'])->name('admin.report.generate');
+    Route::delete('/admin/report/delete/{id}', [ReportController::class, 'delete'])->name('admin.report.delete');
 });
