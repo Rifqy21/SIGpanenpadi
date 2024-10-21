@@ -541,7 +541,7 @@
     <script>
         const panen = @json($panens);
         const provinsis = @json($provinsis);
-
+        console.log(provinsis)
         var map = L.map('map').setView([-6.200000, 106.816666], 12); // Pusatkan di Jakarta, Indonesia
 
         // Tambahkan layer peta
