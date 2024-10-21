@@ -45,6 +45,7 @@
                         </form>
                     </div>
                     <div class="card-footer text-center">
+                        <p><a href="/" class="text-decoration-none">Kembali Ke Landing Page</a></p>
                         <p>Belum Punya Akun ? <a href="{{ route('register') }}" class="text-decoration-none fw-bold text-black">Register</a></p>
                     </div>
                 </div>

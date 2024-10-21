@@ -159,6 +159,11 @@
         .fi {
             color: black;
         }
+
+        .dataTables_filter {
+            text-align: right !important;
+            float: right !important;
+        }
     </style>
 </head>
 
@@ -190,7 +195,7 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="#">Register</a>
+                        <a class="nav-link fw-bold" href="{{ route('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary text-white" href="{{ route('login') }}">Login</a>
@@ -208,10 +213,9 @@
                     <div class="decoration"></div>
                     <div class="card p-4" id="special_card" style="text-align: left;">
                         <h1 style="color: #5956e9;">SISTEM INFORMASI GEOGRAFIS</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus velit velit, eget
-                            facilisis velit sollicitudin non. Fusce ac lorem ultricies, bibendum nisi sit amet,
-                            scelerisque
-                            nibh.</p>
+                        <p style="text-align: justify;">Selamat datang di Sistem Informasi Geografis (SIG) Dinas Ketahanan Pangan dan Pertanian. SIG ini
+                            menyediakan informasi mengenai data panen di Indonesia. Anda dapat melihat data panen
+                            berdasarkan provinsi, tahun, dan lainnya. Selamat menikmati!</p>
                     </div>
                 </div>
                 <div class="col-md-1"></div>
@@ -268,15 +272,11 @@
                             <select name="provinsi" id="provinsi" class="form-control">
                                 <option value="semua_provinsi">Semua Provinsi</option>
                                 @foreach ($provinsi as $p)
-                                    <option value="{{ $p->id }}">{{ $p->nama_provinsi }}</option>
+                                    <option value="{{ $p->nama_provinsi }}">{{ $p->nama_provinsi }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-4"></div>
-                        <div class="col-3">
-                            <input type="text" name="search" id="search" class="form-control"
-                                placeholder="Cari Data Panen">
-                        </div>
                     </div>
 
                 </div>
@@ -284,23 +284,21 @@
                     <table id="dataTable" class="table table-striped table-bordered" style="width:100%;">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Provinsi</th>
-                                <th>Tanggal Dibuat</th>
                                 <th>Luas Panen (Ha)</th>
                                 <th>Produksi (TON)</th>
                                 <th>Produktivitas (Ku/Ha)</th>
+                                <th>Tahun</th>
                             </tr>
                         </thead>
                         <tbody id="dataBody">
-                            @foreach ($panen as $p)
+                            @foreach ($books as $p)
                                 <tr>
-                                    <td>{{ $p->id }}</td>
-                                    <td>{{ $p->provinsi->nama_provinsi }}</td>
-                                    <td>{{ $p->created_at }}</td>
-                                    <td>{{ $p->luas_panen }}</td>
-                                    <td>{{ $p->produksi }}</td>
-                                    <td>{{ $p->produktivitas }}</td>
+                                    <td>{{ $p[0] }}</td>
+                                    <td>{{ $p[1] }}</td>
+                                    <td>{{ $p[2] }}</td>
+                                    <td>{{ $p[3] }}</td>
+                                    <td>{{ $p[4] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -343,7 +341,7 @@
                                         <h5 class="text-black">Address</h5>
                                     </div>
                                     <div class="row">
-                                        <p class="text-black">Lorem ipsum dolor sit amet consectetur </p>
+                                        <p class="text-black">Kantor Pusat Kementerian Pertanian Gedung D Lantai 8 Jl. Harsono RM. No. 3 </p>
                                     </div>
                                 </div>
                             </div>
@@ -356,7 +354,7 @@
                                         <h5 class="text-black">Call Us</h5>
                                     </div>
                                     <div class="row">
-                                        <p class="text-black">+62 ... </p>
+                                        <p class="text-black">(021) 7816082</p>
                                     </div>
                                 </div>
                             </div>
@@ -369,7 +367,7 @@
                                         <h5 class="text-black">Email Us</h5>
                                     </div>
                                     <div class="row">
-                                        <p class="text-black">info@gmail.com </p>
+                                        <p class="text-black">ditjen.psp@pertanian.go.id </p>
                                     </div>
 
                                 </div>
@@ -380,10 +378,10 @@
                                         <i class="fa-solid fa-clock text-black" style="font-size: 40px;"></i>
                                     </div>
                                     <div class="row">
-                                        <h5 class="text-black">Open Hour</h5>
+                                        <h5 class="text-black">Jam Operasional</h5>
                                     </div>
                                     <div class="row">
-                                        <p class="text-black">Monday - Friday <br>08:00 AM - 17:00 PM</p>
+                                        <p class="text-black">Senin - Jumat <br> 08.00 – 16.00</p>
                                     </div>
 
                                 </div>
@@ -394,7 +392,8 @@
                         <div class="col-12">
                             <div class="whiteCardLong p-3">
                                 <h3 class="text-center fw-bold text-black">Send Us Message</h3>
-                                <form action="">
+                                <form action="{{ route('sendAduan') }}" method="POST">
+                                    @csrf
                                     <div class="row mb-2">
                                         <div class="col-md-6">
                                             <input type="text" name="name" id="name" class="form-control"
@@ -453,6 +452,11 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- ChartJS -->
@@ -476,12 +480,51 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/plugins/dist/js/adminlte.js') }}"></script>
     <script src="{{ asset('assets/plugins/dist/js/pages/dashboard.js') }}"></script>
+    <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+    @if (session('success'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-success',
+                title: 'Sukses',
+                body: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if (session('info'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                title: 'Informasi',
+                body: '{{ session('info') }}'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'Gagal',
+                body: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Gagal',
+                    body: '{{ $error }}'
+                });
+            @endforeach
+        </script>
+    @endif
 
     <!-- Custom JS -->
     <script>
         $(document).ready(function() {
             $('#world-map').vectorMap({
-                map: 'indonesia_id', 
+                map: 'indonesia_id',
                 backgroundColor: 'transparent',
                 regionStyle: {
                     initial: {
@@ -531,7 +574,6 @@
     </script>
     <script>
         const panen = @json($panen);
-
         var map = L.map('map').setView([-6.200000, 106.816666], 12); // Pusatkan di Jakarta, Indonesia
 
         // Tambahkan layer peta
@@ -542,7 +584,7 @@
         // Titik-titik koordinat yang sudah ditentukan
         var locations = panen.map(function(panen, index) {
             return {
-                name: 'Lokasi Panen  ' + panen.name + ' ' + panen.provinsi.nama_provinsi + ' #' + index,
+                name: 'Lokasi Panen  ' + panen.name + ' ' + panen.nama_provinsi + ' #' + index,
                 latitude: panen.latitude,
                 longitude: panen.longitude
             };
@@ -572,57 +614,35 @@
 
         const search = document.getElementById('search');
         const provinsi = document.getElementById('provinsi');
-
-        function filterPanen() {
-            const searchText = search.value.toLowerCase();
-            const selectedProvinsi = provinsi.value;
-
-            const filteredPanen = panen.filter(p => {
-                // Filter berdasarkan provinsi
-                const matchesProvinsi = selectedProvinsi === 'semua_provinsi' || p.provinsi.id == selectedProvinsi;
-
-                // Filter berdasarkan input pencarian
-                const matchesSearch = p.provinsi.nama_provinsi.toLowerCase().includes(searchText) ||
-                    p.created_at.toLowerCase().includes(searchText) ||
-                    p.luas_panen.toString().includes(searchText) ||
-                    p.produksi.toString().includes(searchText) ||
-                    p.produktivitas.toString().includes(searchText);
-
-                // Hanya kembalikan data yang cocok dengan kedua filter
-                return matchesProvinsi && matchesSearch;
-            });
-
-            const dataBody = document.getElementById('dataBody');
-            dataBody.innerHTML = '';
-
-            filteredPanen.forEach(p => {
-                const tr = document.createElement('tr');
-
-                // Parse and format the created_at date
-                const date = new Date(p.created_at);
-                const formattedDate = date.toLocaleString(
-                    'en-GB'); // This will give you the date in DD/MM/YYYY format
-
-                tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.provinsi.nama_provinsi}</td>
-            <td>${formattedDate}</td>
-            <td>${p.luas_panen}</td>
-            <td>${p.produksi}</td>
-            <td>${p.produktivitas}</td>
-        `;
-                dataBody.appendChild(tr);
-            });
-        }
-
-        // Tambahkan event listener untuk pencarian
-        search.addEventListener('keyup', filterPanen);
-
-        // Tambahkan event listener untuk perubahan filter provinsi
-        provinsi.addEventListener('change', filterPanen);
     </script>
 
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $("#dataTable").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+            });
 
+
+            // Custom filter for Provinsi
+            $('#provinsi').on('change', function() {
+                var selectedProvinsi = $(this).val();
+                if (selectedProvinsi === 'semua_provinsi') {
+                    table.column(0).search('').draw();
+                } else {
+                    if (selectedProvinsi) {
+                        table.column(0).search('^' + selectedProvinsi + '$', true, false).draw();
+                    } else {
+                        table.column(0).search('').draw();
+                    }
+                }
+            });
+
+
+        });
+    </script>
 
 
 </body>

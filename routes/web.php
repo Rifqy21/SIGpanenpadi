@@ -14,10 +14,12 @@ Route::get('/logout', [AuthentificationController::class, 'logout'])->name('logo
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LandingPageController::class, 'index']);
+    Route::post('/sendAduan', [LandingPageController::class, 'sendAduan'])->name('sendAduan');
     Route::get('/login', [AuthentificationController::class, 'login'])->name('login');
     Route::get('/register', [AuthentificationController::class, 'register'])->name('register');
     Route::post('/authLogin', [AuthentificationController::class, 'authLogin'])->name('authLogin');
     Route::post('/authRegis', [AuthentificationController::class, 'authRegis'])->name('authRegis');
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -39,7 +41,10 @@ Route::middleware(['auth', 'user'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+
     Route::get('/aduan', [AdminDashboardController::class, 'aduan'])->name('aduan');
+    Route::get('/aduan/tandai/{id}', [AdminDashboardController::class, 'changeStatus'])->name('admin.aduan.changeStatus');
+
     Route::get('/createDataPanen', [AdminDashboardController::class, 'createDataPanen'])->name('createDataPanen');
     Route::post('/insertDataPanen', [AdminDashboardController::class, 'insertDataPanen'])->name('insertDataPanen');
     Route::get('/admin/panen/show/{id}', [AdminDashboardController::class, 'show'])->name('admin.panen.show');
@@ -52,6 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/user/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.user.edit');
     Route::put('/admin/user/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.user.delete');
+    Route::put('/admin/user/changePassword/{id}', [AdminDashboardController::class, 'changePassword'])->name('admin.user.change-password.update');
 
     Route::get('/admin/chat', [AdminChatController::class, 'index'])->name('admin.chat.index');
     Route::get('/admin/chat/{userId}', [AdminChatController::class, 'viewConversation'])->name('admin.chat.viewConversation');
@@ -61,4 +67,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::post('/admin/report/generate', [ReportController::class, 'generateLaporan'])->name('admin.report.generate');
     Route::delete('/admin/report/delete/{id}', [ReportController::class, 'delete'])->name('admin.report.delete');
+
 });

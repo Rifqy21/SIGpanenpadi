@@ -274,7 +274,6 @@
                                                 <td>{{ date('d-m-Y', strtotime($petani->updated_at)) }}</td>
                                                 <td>{{ $petani->role }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
                                                     <a href="{{ route('admin.user.edit', $petani->id) }}"
                                                         class="btn btn-warning">Edit</a>
                                                     <form action="{{ route('admin.user.delete', $petani->id) }}"
@@ -284,8 +283,57 @@
                                                         <button type="submit" class="btn btn-danger"
                                                             onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
                                                     </form>
+                                                    {{-- change password --}}
+                                                    <button data-toggle="modal"
+                                                        data-target="#changePasswordModal{{ $petani->id }}"
+                                                        class="btn btn-info">Ganti Password</button>
                                                 </td>
                                             </tr>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade " id="changePasswordModal{{ $petani->id }}"
+                                                tabindex="-1" aria-labelledby="changePasswordModalLabel"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="changePasswordModalLabel">Ganti
+                                                                Password</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form
+                                                                action="{{ route('admin.user.change-password.update', $petani->id) }}"
+                                                                method="POST">
+                                                                @method('PUT')
+                                                                @csrf
+                                                                <div
+                                                                    class="form-group
+                                                                ">
+                                                                    <label for="password">Password Baru</label>
+                                                                    <input type="password" class="form-control"
+                                                                        id="password{{ $petani->id }}" name="password"
+                                                                        required>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group
+                                                            ">
+                                                                    <label for="password_confirmation">Konfirmasi Password
+                                                                        Baru</label>
+                                                                    <input type="password" class="form-control"
+                                                                        id="password_confirmation{{ $petani->id }}"
+                                                                        name="password_confirmation" required>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Ganti
+                                                                    Password</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -492,6 +540,7 @@
     </script>
     <script>
         const panen = @json($panens);
+        const provinsis = @json($provinsis);
 
         var map = L.map('map').setView([-6.200000, 106.816666], 12); // Pusatkan di Jakarta, Indonesia
 
@@ -499,6 +548,52 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
+
+        var panenPerProvinsi = {};
+        provinsis.forEach(function(provinsi) {
+            console.log(provinsi.nama_provinsi)
+            panenPerProvinsi[provinsi.nama_provinsi] = 0;
+        });
+
+
+        // sum the total panen for each provinsi
+        panen.forEach(function(p) {
+            var provinsi = p.provinsi.nama_provinsi;
+            // sum the total panen for each provinsi p.produksi
+            panenPerProvinsi[provinsi] += parseInt(p.produksi); // dalam format ton
+        });
+
+
+        // panen.forEach(function(p) {
+        //     var provinsi = p.provinsi.nama_provinsi;
+        //     if (!panenPerProvinsi[provinsi]) {
+        //         panenPerProvinsi[provinsi] = 0;
+        //     }
+        //     // sum the total panen for each provinsi p.produksi
+        //     panenPerProvinsi[provinsi] += parseInt(p.produksi); // dalam format ton
+        // });
+
+        // remove all space in the provinsi name
+        Object.keys(panenPerProvinsi).forEach(function(provinsi) {
+            // if nama provinsi contains space trim
+            if (provinsi.includes(' ')) {
+                var newProvinsi = provinsi.replace(/\s/g, '');
+                panenPerProvinsi[newProvinsi] = panenPerProvinsi[provinsi];
+                delete panenPerProvinsi[provinsi];
+            }
+        });
+
+
+
+
+        function getColor(jumlahPanen) {
+            if (jumlahPanen > 20) return 'green'; // produksi lebih dari 20 ton
+            else if (jumlahPanen > 10) return 'yellow'; // produksi lebih dari 10 ton
+            else if (jumlahPanen > 0) return 'red' // produksi lebih dari 1 ton
+            // if there is no data, return no color
+            else return 'none';
+        }
+
 
         // Titik-titik koordinat yang sudah ditentukan
         var locations = panen.map(function(panen, index) {
@@ -516,5 +611,35 @@
             L.marker([lat, lng]).addTo(map)
                 .bindPopup(location.name + '<br>Latitude: ' + lat + '<br>Longitude: ' + lng);
         });
+
+        fetch('data/geo.json') // Sesuaikan dengan path file Anda
+            .then(response => response.json())
+            .then(data => {
+                // Menambahkan poligon kecamatan ke peta
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        var provinsi = feature.properties.NAME_1; // Ambil nama provinsi dari GeoJSON
+                        var jumlahPanen = panenPerProvinsi[
+                            provinsi] // Ambil jumlah panen dari data panenPerProvinsi
+                        return {
+                            fillColor: getColor(jumlahPanen), // Tentukan warna berdasarkan jumlah panen
+                            weight: 1,
+                            opacity: 1,
+                            color: 'white',
+                            dashArray: '3',
+                            fillOpacity: 0.5
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // Menampilkan popup dengan informasi kecamatan dan provinsi
+                        layer.bindPopup("Kecamatan: " + feature.properties.NAME_3 + "<br>Provinsi: " +
+                            feature.properties.NAME_1 + "<br>Jumlah Panen: " + (panenPerProvinsi[feature
+                                .properties.NAME_1] + " ton" || "Data tidak tersedia"));
+                    }
+                }).addTo(map);
+            })
+            .catch(error => {
+                console.error('Error loading the GeoJSON:', error);
+            });
     </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aduan;
 use App\Models\panen;
 use App\Models\Provinsi;
 use App\Models\User;
@@ -59,7 +60,22 @@ class AdminDashboardController extends Controller
 
     public function aduan()
     {
-        return view('admin.aduan');
+
+        $aduans = Aduan::orderBy('updated_at', 'desc')->get();
+
+        return view('admin.aduan', compact('aduans'));
+    }
+
+    public function changeStatus($id){
+        $aduan = Aduan::find($id);
+        if ($aduan->status == 'unreply') {
+            $aduan->status = 'replied';
+        } else {
+            $aduan->status = 'unreply';
+        }
+        $aduan->save();
+
+        return redirect()->route('aduan')->with('success', 'Status Aduan Berhasil Diubah');
     }
 
     public function createDataPanen()
@@ -236,6 +252,24 @@ class AdminDashboardController extends Controller
         $user->delete();
 
         return redirect()->route('admin')->with('success', 'User Berhasil Dihapus');
+    }
+
+    public function changePassword($id, Request $request)
+    {
+        $request->validate([
+            'password' => 'required|confirmed|min:6',
+        ], [
+            'password.required' => 'Password harus diisi',
+            'password.confirmed' => 'Password tidak sama',
+            'password.min' => 'Password minimal berisi 6 karakter',
+        ]);
+
+        $user = User::find($id);
+        $user->password = bcrypt($request->password);
+        $user->updated_at = now();
+        $user->save();
+
+        return redirect()->route('admin')->with('success', 'Password Berhasil Diubah');
     }
 
 }

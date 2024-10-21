@@ -49,6 +49,7 @@
                         </form>
                     </div>
                     <div class="card-footer text-center">
+                        <p><a href="/" class="text-decoration-none">Kembali Ke Landing Page</a></p>
                         <p>Sudah Punya Akun ? <a href="{{ route('login') }}" class="text-decoration-none fw-bold text-black">Login</a></p>
                     </div>
                 </div>
