@@ -1,0 +1,933 @@
+{
+    "name": "BPS",
+    "datas": [
+        {
+            "provinsi": "Aceh",
+            "luas_panen": "271750,2",
+            "produktifitas": "55,55",
+            "produksi": "1509456",
+            "tahun": "2022",
+            "id": 2
+        },
+        {
+            "provinsi": "Aceh",
+            "luas_panen": "254287,38",
+            "produktifitas": "55,22",
+            "produksi": "1404234,82",
+            "tahun": "2023",
+            "id": 3
+        },
+        {
+            "provinsi": "Sumatera Utara",
+            "luas_panen": "385405",
+            "produktifitas": "52",
+            "produksi": "2004142,51",
+            "tahun": "2021",
+            "id": 4
+        },
+        {
+            "provinsi": "Sumatera Utara",
+            "luas_panen": "411462,1",
+            "produktifitas": "50,76",
+            "produksi": "2088584",
+            "tahun": "2022",
+            "id": 5
+        },
+        {
+            "provinsi": "Sumatera Utara",
+            "luas_panen": "406109,49",
+            "produktifitas": "51,4",
+            "produksi": "2087474,15",
+            "tahun": "2023",
+            "id": 6
+        },
+        {
+            "provinsi": "Sumatera Barat",
+            "luas_panen": "272391,95",
+            "produktifitas": "48,36",
+            "produksi": "1317209,38",
+            "tahun": "2021",
+            "id": 7
+        },
+        {
+            "provinsi": "Sumatera Barat",
+            "luas_panen": "271883,1",
+            "produktifitas": "50,52",
+            "produksi": "1373532",
+            "tahun": "2022",
+            "id": 8
+        },
+        {
+            "provinsi": "Sumatera Barat",
+            "luas_panen": "300564,77",
+            "produktifitas": "49,32",
+            "produksi": "1482468,79",
+            "tahun": "2023",
+            "id": 9
+        },
+        {
+            "provinsi": "Riau",
+            "luas_panen": "53062,35",
+            "produktifitas": "40,98",
+            "produksi": "217458,87",
+            "tahun": "2021",
+            "id": 10
+        },
+        {
+            "provinsi": "Riau",
+            "luas_panen": "51054,04",
+            "produktifitas": "41,83",
+            "produksi": "213557,2",
+            "tahun": "2022",
+            "id": 11
+        },
+        {
+            "provinsi": "Riau",
+            "luas_panen": "51914,14",
+            "produktifitas": "39,68",
+            "produksi": "205972,55",
+            "tahun": "2023",
+            "id": 12
+        },
+        {
+            "provinsi": "Jambi",
+            "luas_panen": "64412,26",
+            "produktifitas": "46,29",
+            "produksi": "298149,25",
+            "tahun": "2021",
+            "id": 13
+        },
+        {
+            "provinsi": "Jambi",
+            "luas_panen": "60539,59",
+            "produktifitas": "45,88",
+            "produksi": "277743,8",
+            "tahun": "2022",
+            "id": 14
+        },
+        {
+            "provinsi": "Jambi",
+            "luas_panen": "61236,64",
+            "produktifitas": "45,06",
+            "produksi": "275941,45",
+            "tahun": "2023",
+            "id": 15
+        },
+        {
+            "provinsi": "Sumatera Selatan",
+            "luas_panen": "496241,65",
+            "produktifitas": "51,44",
+            "produksi": "2552443,19",
+            "tahun": "2021",
+            "id": 16
+        },
+        {
+            "provinsi": "Sumatera Selatan",
+            "luas_panen": "513378,2",
+            "produktifitas": "54,06",
+            "produksi": "2775069",
+            "tahun": "2022",
+            "id": 17
+        },
+        {
+            "provinsi": "Sumatera Selatan",
+            "luas_panen": "504143,03",
+            "produktifitas": "56,19",
+            "produksi": "2832773,92",
+            "tahun": "2023",
+            "id": 18
+        },
+        {
+            "provinsi": "Bengkulu",
+            "luas_panen": "55704,69",
+            "produktifitas": "48,67",
+            "produksi": "271117,19",
+            "tahun": "2021",
+            "id": 19
+        },
+        {
+            "provinsi": "Bengkulu",
+            "luas_panen": "57151,84",
+            "produktifitas": "49,27",
+            "produksi": "281610,1",
+            "tahun": "2022",
+            "id": 20
+        },
+        {
+            "provinsi": "Bengkulu",
+            "luas_panen": "57877,18",
+            "produktifitas": "49,53",
+            "produksi": "286684,43",
+            "tahun": "2023",
+            "id": 21
+        },
+        {
+            "provinsi": "Lampung",
+            "luas_panen": "489573,23",
+            "produktifitas": "50,77",
+            "produksi": "2485452,78",
+            "tahun": "2021",
+            "id": 22
+        },
+        {
+            "provinsi": "Lampung",
+            "luas_panen": "518256,1",
+            "produktifitas": "51,87",
+            "produksi": "2688160",
+            "tahun": "2022",
+            "id": 23
+        },
+        {
+            "provinsi": "Lampung",
+            "luas_panen": "530108,09",
+            "produktifitas": "52,03",
+            "produksi": "2757898,19",
+            "tahun": "2023",
+            "id": 24
+        },
+        {
+            "provinsi": "Bangka Belitung",
+            "luas_panen": "18278,27",
+            "produktifitas": "38,57",
+            "produksi": "70496,25",
+            "tahun": "2021",
+            "id": 25
+        },
+        {
+            "provinsi": "Bangka Belitung",
+            "luas_panen": "15107,8",
+            "produktifitas": "40,66",
+            "produksi": "61425,07",
+            "tahun": "2022",
+            "id": 26
+        },
+        {
+            "provinsi": "Bangka Belitung",
+            "luas_panen": "15284,56",
+            "produktifitas": "43,49",
+            "produksi": "66468,89",
+            "tahun": "2023",
+            "id": 27
+        },
+        {
+            "provinsi": "Kepulauan Riau",
+            "luas_panen": "270,16",
+            "produktifitas": "31,65",
+            "produksi": "855,01",
+            "tahun": "2021",
+            "id": 28
+        },
+        {
+            "provinsi": "Kepulauan Riau",
+            "luas_panen": "179,48",
+            "produktifitas": "28,24",
+            "produksi": "506,91",
+            "tahun": "2022",
+            "id": 29
+        },
+        {
+            "provinsi": "Kepulauan Riau",
+            "luas_panen": "115,27",
+            "produktifitas": "28,11",
+            "produksi": "324,01",
+            "tahun": "2023",
+            "id": 30
+        },
+        {
+            "provinsi": "DKI Jakarta",
+            "luas_panen": "559,97",
+            "produktifitas": "58,03",
+            "produksi": "3249,47",
+            "tahun": "2021",
+            "id": 31
+        },
+        {
+            "provinsi": "DKI Jakarta",
+            "luas_panen": "477,25",
+            "produktifitas": "48,98",
+            "produksi": "2337,77",
+            "tahun": "2022",
+            "id": 32
+        },
+        {
+            "provinsi": "DKI Jakarta",
+            "luas_panen": "542,93",
+            "produktifitas": "49,26",
+            "produksi": "2674,28",
+            "tahun": "2023",
+            "id": 33
+        },
+        {
+            "provinsi": "Jawa Barat",
+            "luas_panen": "1604109,31",
+            "produktifitas": "56,81",
+            "produksi": "9113573,08",
+            "tahun": "2021",
+            "id": 34
+        },
+        {
+            "provinsi": "Jawa Barat",
+            "luas_panen": "1662404",
+            "produktifitas": "56,75",
+            "produksi": "9433723",
+            "tahun": "2022",
+            "id": 35
+        },
+        {
+            "provinsi": "Jawa Barat",
+            "luas_panen": "1583656,28",
+            "produktifitas": "57,71",
+            "produksi": "9140039,2",
+            "tahun": "2023",
+            "id": 36
+        },
+        {
+            "provinsi": "Jawa Tengah",
+            "luas_panen": "1696712,36",
+            "produktifitas": "56,69",
+            "produksi": "9618656,81",
+            "tahun": "2021",
+            "id": 37
+        },
+        {
+            "provinsi": "Jawa Tengah",
+            "luas_panen": "1688670",
+            "produktifitas": "55,41",
+            "produksi": "9356445",
+            "tahun": "2022",
+            "id": 38
+        },
+        {
+            "provinsi": "Jawa Tengah",
+            "luas_panen": "1642761,23",
+            "produktifitas": "55,3",
+            "produksi": "9084107,53",
+            "tahun": "2023",
+            "id": 39
+        },
+        {
+            "provinsi": "Daerah Istimewa Yogyakarta",
+            "luas_panen": "107506,16",
+            "produktifitas": "51,77",
+            "produksi": "556531,03",
+            "tahun": "2021",
+            "id": 40
+        },
+        {
+            "provinsi": "Daerah Istimewa Yogyakarta",
+            "luas_panen": "110927,2",
+            "produktifitas": "50,64",
+            "produksi": "561699,5",
+            "tahun": "2022",
+            "id": 41
+        },
+        {
+            "provinsi": "Daerah Istimewa Yogyakarta",
+            "luas_panen": "105693,66",
+            "produktifitas": "50,53",
+            "produksi": "534113,69",
+            "tahun": "2023",
+            "id": 42
+        },
+        {
+            "provinsi": "Jawa Timur",
+            "luas_panen": "1747481,2",
+            "produktifitas": "56,02",
+            "produksi": "9789587,67",
+            "tahun": "2021",
+            "id": 43
+        },
+        {
+            "provinsi": "Jawa Timur",
+            "luas_panen": "1693211",
+            "produktifitas": "56,26",
+            "produksi": "9526516",
+            "tahun": "2022",
+            "id": 44
+        },
+        {
+            "provinsi": "Jawa Timur",
+            "luas_panen": "1698083,31",
+            "produktifitas": "57,19",
+            "produksi": "9710661,33",
+            "tahun": "2023",
+            "id": 45
+        },
+        {
+            "provinsi": "Banten",
+            "luas_panen": "318248,46",
+            "produktifitas": "50,38",
+            "produksi": "1603247",
+            "tahun": "2021",
+            "id": 46
+        },
+        {
+            "provinsi": "Banten",
+            "luas_panen": "337240,7",
+            "produktifitas": "53,04",
+            "produksi": "1788583",
+            "tahun": "2022",
+            "id": 47
+        },
+        {
+            "provinsi": "Banten",
+            "luas_panen": "311199,73",
+            "produktifitas": "54,19",
+            "produksi": "1686483,29",
+            "tahun": "2023",
+            "id": 48
+        },
+        {
+            "provinsi": "Bali",
+            "luas_panen": "105201,31",
+            "produktifitas": "58,83",
+            "produksi": "618910,81",
+            "tahun": "2021",
+            "id": 49
+        },
+        {
+            "provinsi": "Bali",
+            "luas_panen": "112320,6",
+            "produktifitas": "60,59",
+            "produksi": "680601,6",
+            "tahun": "2022",
+            "id": 50
+        },
+        {
+            "provinsi": "Bali",
+            "luas_panen": "108514,06",
+            "produktifitas": "62,07",
+            "produksi": "673580,65",
+            "tahun": "2023",
+            "id": 51
+        },
+        {
+            "provinsi": "Nusa Tenggara Barat",
+            "luas_panen": "276211,88",
+            "produktifitas": "51,39",
+            "produksi": "1419559,84",
+            "tahun": "2021",
+            "id": 52
+        },
+        {
+            "provinsi": "Nusa Tenggara Barat",
+            "luas_panen": "270092,9",
+            "produktifitas": "53,79",
+            "produksi": "1452945",
+            "tahun": "2022",
+            "id": 53
+        },
+        {
+            "provinsi": "Nusa Tenggara Barat",
+            "luas_panen": "287512,14",
+            "produktifitas": "53,51",
+            "produksi": "1538536,92",
+            "tahun": "2023",
+            "id": 54
+        },
+        {
+            "provinsi": "Nusa Tenggara Timur",
+            "luas_panen": "174900,07",
+            "produktifitas": "41,85",
+            "produksi": "731877,74",
+            "tahun": "2021",
+            "id": 55
+        },
+        {
+            "provinsi": "Nusa Tenggara Timur",
+            "luas_panen": "183092",
+            "produktifitas": "41,29",
+            "produksi": "756049,9",
+            "tahun": "2022",
+            "id": 56
+        },
+        {
+            "provinsi": "Nusa Tenggara Timur",
+            "luas_panen": "184698,89",
+            "produktifitas": "41,52",
+            "produksi": "766810,46",
+            "tahun": "2023",
+            "id": 57
+        },
+        {
+            "provinsi": "Kalimantan Barat",
+            "luas_panen": "223165,74",
+            "produktifitas": "31,9",
+            "produksi": "711898,01",
+            "tahun": "2021",
+            "id": 58
+        },
+        {
+            "provinsi": "Kalimantan Barat",
+            "luas_panen": "241478,6",
+            "produktifitas": "30,28",
+            "produksi": "731225,8",
+            "tahun": "2022",
+            "id": 59
+        },
+        {
+            "provinsi": "Kalimantan Barat",
+            "luas_panen": "224068,52",
+            "produktifitas": "31,25",
+            "produksi": "700290,8",
+            "tahun": "2023",
+            "id": 60
+        },
+        {
+            "provinsi": "Kalimantan Tengah",
+            "luas_panen": "125870,05",
+            "produktifitas": "30,28",
+            "produksi": "381189,55",
+            "tahun": "2021",
+            "id": 61
+        },
+        {
+            "provinsi": "Kalimantan Tengah",
+            "luas_panen": "108226,8",
+            "produktifitas": "31,78",
+            "produksi": "343918,8",
+            "tahun": "2022",
+            "id": 62
+        },
+        {
+            "provinsi": "Kalimantan Tengah",
+            "luas_panen": "101580,3",
+            "produktifitas": "32,56",
+            "produksi": "330781,05",
+            "tahun": "2023",
+            "id": 63
+        },
+        {
+            "provinsi": "Kalimantan Selatan",
+            "luas_panen": "254263,59",
+            "produktifitas": "39,97",
+            "produksi": "1016313,55",
+            "tahun": "2021",
+            "id": 64
+        },
+        {
+            "provinsi": "Kalimantan Selatan",
+            "luas_panen": "214908,9",
+            "produktifitas": "38,13",
+            "produksi": "819419,2",
+            "tahun": "2022",
+            "id": 65
+        },
+        {
+            "provinsi": "Kalimantan Selatan",
+            "luas_panen": "214283,82",
+            "produktifitas": "40,86",
+            "produksi": "875545,73",
+            "tahun": "2023",
+            "id": 66
+        },
+        {
+            "provinsi": "Kalimantan Timur",
+            "luas_panen": "66269,46",
+            "produktifitas": "36,92",
+            "produksi": "244677,96",
+            "tahun": "2021",
+            "id": 67
+        },
+        {
+            "provinsi": "Kalimantan Timur",
+            "luas_panen": "64970,01",
+            "produktifitas": "36,85",
+            "produksi": "239425,3",
+            "tahun": "2022",
+            "id": 68
+        },
+        {
+            "provinsi": "Kalimantan Timur",
+            "luas_panen": "57082,01",
+            "produktifitas": "39,76",
+            "produksi": "226972,07",
+            "tahun": "2023",
+            "id": 69
+        },
+        {
+            "provinsi": "Kalimantan Utara",
+            "luas_panen": "8880,83",
+            "produktifitas": "33,74",
+            "produksi": "29967,31",
+            "tahun": "2021",
+            "id": 70
+        },
+        {
+            "provinsi": "Kalimantan Utara",
+            "luas_panen": "8604,19",
+            "produktifitas": "35,49",
+            "produksi": "30533,59",
+            "tahun": "2022",
+            "id": 71
+        },
+        {
+            "provinsi": "Kalimantan Utara",
+            "luas_panen": "6499,92",
+            "produktifitas": "36,31",
+            "produksi": "23602",
+            "tahun": "2023",
+            "id": 72
+        },
+        {
+            "provinsi": "Sulawesi Utara",
+            "luas_panen": "59182,52",
+            "produktifitas": "39,35",
+            "produksi": "232884,76",
+            "tahun": "2021",
+            "id": 73
+        },
+        {
+            "provinsi": "Sulawesi Utara",
+            "luas_panen": "58195,56",
+            "produktifitas": "41,88",
+            "produksi": "243730,3",
+            "tahun": "2022",
+            "id": 74
+        },
+        {
+            "provinsi": "Sulawesi Utara",
+            "luas_panen": "54562,95",
+            "produktifitas": "43,65",
+            "produksi": "238193,41",
+            "tahun": "2023",
+            "id": 75
+        },
+        {
+            "provinsi": "Sulawesi Tengah",
+            "luas_panen": "182186,62",
+            "produktifitas": "47,59",
+            "produksi": "867012,77",
+            "tahun": "2021",
+            "id": 76
+        },
+        {
+            "provinsi": "Sulawesi Tengah",
+            "luas_panen": "168993,2",
+            "produktifitas": "44,05",
+            "produksi": "744408,7",
+            "tahun": "2022",
+            "id": 77
+        },
+        {
+            "provinsi": "Sulawesi Tengah",
+            "luas_panen": "177699,03",
+            "produktifitas": "46,22",
+            "produksi": "821367,41",
+            "tahun": "2023",
+            "id": 78
+        },
+        {
+            "provinsi": "Sulawesi Selatan",
+            "luas_panen": "985158,23",
+            "produktifitas": "51,67",
+            "produksi": "5090637,23",
+            "tahun": "2021",
+            "id": 79
+        },
+        {
+            "provinsi": "Sulawesi Selatan",
+            "luas_panen": "1038084",
+            "produktifitas": "51,64",
+            "produksi": "5360169",
+            "tahun": "2022",
+            "id": 80
+        },
+        {
+            "provinsi": "Sulawesi Selatan",
+            "luas_panen": "967790,21",
+            "produktifitas": "50,39",
+            "produksi": "4876386,11",
+            "tahun": "2023",
+            "id": 81
+        },
+        {
+            "provinsi": "Sulawesi Tenggara",
+            "luas_panen": "127517,29",
+            "produktifitas": "41,57",
+            "produksi": "530029,08",
+            "tahun": "2021",
+            "id": 82
+        },
+        {
+            "provinsi": "Sulawesi Tenggara",
+            "luas_panen": "118258,8",
+            "produktifitas": "40,5",
+            "produksi": "478958",
+            "tahun": "2022",
+            "id": 83
+        },
+        {
+            "provinsi": "Sulawesi Tenggara",
+            "luas_panen": "113930,26",
+            "produktifitas": "42,08",
+            "produksi": "479407,25",
+            "tahun": "2023",
+            "id": 84
+        },
+        {
+            "provinsi": "Gorontalo",
+            "luas_panen": "48713,5",
+            "produktifitas": "48,12",
+            "produksi": "234392,86",
+            "tahun": "2021",
+            "id": 85
+        },
+        {
+            "provinsi": "Gorontalo",
+            "luas_panen": "46823,47",
+            "produktifitas": "51,29",
+            "produksi": "240134,5",
+            "tahun": "2022",
+            "id": 86
+        },
+        {
+            "provinsi": "Gorontalo",
+            "luas_panen": "49610,47",
+            "produktifitas": "50,68",
+            "produksi": "251431,76",
+            "tahun": "2023",
+            "id": 87
+        },
+        {
+            "provinsi": "Sulawesi Barat",
+            "luas_panen": "59763,18",
+            "produktifitas": "52,05",
+            "produksi": "311072,46",
+            "tahun": "2021",
+            "id": 88
+        },
+        {
+            "provinsi": "Sulawesi Barat",
+            "luas_panen": "69323,95",
+            "produktifitas": "50,99",
+            "produksi": "353513,3",
+            "tahun": "2022",
+            "id": 89
+        },
+        {
+            "provinsi": "Sulawesi Barat",
+            "luas_panen": "58606,67",
+            "produktifitas": "49,73",
+            "produksi": "291458,59",
+            "tahun": "2023",
+            "id": 90
+        },
+        {
+            "provinsi": "Maluku",
+            "luas_panen": "28319,75",
+            "produktifitas": "41,24",
+            "produksi": "116803,67",
+            "tahun": "2021",
+            "id": 91
+        },
+        {
+            "provinsi": "Maluku",
+            "luas_panen": "23987,82",
+            "produktifitas": "38,6",
+            "produksi": "92601,06",
+            "tahun": "2022",
+            "id": 92
+        },
+        {
+            "provinsi": "Maluku",
+            "luas_panen": "22636,68",
+            "produktifitas": "35,32",
+            "produksi": "79958,34",
+            "tahun": "2023",
+            "id": 93
+        },
+        {
+            "provinsi": "Maluku Utara",
+            "luas_panen": "7781,96",
+            "produktifitas": "36,05",
+            "produksi": "28050,8",
+            "tahun": "2021",
+            "id": 94
+        },
+        {
+            "provinsi": "Maluku Utara",
+            "luas_panen": "6416,45",
+            "produktifitas": "38,16",
+            "produksi": "24486,03",
+            "tahun": "2022",
+            "id": 95
+        },
+        {
+            "provinsi": "Maluku Utara",
+            "luas_panen": "7709,07",
+            "produktifitas": "34,59",
+            "produksi": "26663,23",
+            "tahun": "2023",
+            "id": 96
+        },
+        {
+            "provinsi": "Papua Barat",
+            "luas_panen": "6414,94",
+            "produktifitas": "41,98",
+            "produksi": "26926,93",
+            "tahun": "2021",
+            "id": 97
+        },
+        {
+            "provinsi": "Papua Barat",
+            "luas_panen": "5460,59",
+            "produktifitas": "43,89",
+            "produksi": "23963,92",
+            "tahun": "2022",
+            "id": 98
+        },
+        {
+            "provinsi": "Papua Barat",
+            "luas_panen": "5006,27",
+            "produktifitas": "45,08",
+            "produksi": "22566,81",
+            "tahun": "2023",
+            "id": 99
+        },
+        {
+            "provinsi": "Papua Barat Daya",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2021",
+            "id": 100
+        },
+        {
+            "provinsi": "Papua Barat Daya",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2022",
+            "id": 101
+        },
+        {
+            "provinsi": "Papua Barat Daya",
+            "luas_panen": "579,83",
+            "produktifitas": "41,34",
+            "produksi": "2396,95",
+            "tahun": "2023",
+            "id": 102
+        },
+        {
+            "provinsi": "Papua",
+            "luas_panen": "64984,9",
+            "produktifitas": "44,05",
+            "produksi": "286279,8",
+            "tahun": "2021",
+            "id": 103
+        },
+        {
+            "provinsi": "Papua",
+            "luas_panen": "49741,91",
+            "produktifitas": "38,99",
+            "produksi": "193943,5",
+            "tahun": "2022",
+            "id": 104
+        },
+        {
+            "provinsi": "Papua",
+            "luas_panen": "840,18",
+            "produktifitas": "44,76",
+            "produksi": "3760,45",
+            "tahun": "2023",
+            "id": 105
+        },
+        {
+            "provinsi": "Papua Selatan",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2021",
+            "id": 106
+        },
+        {
+            "provinsi": "Papua Selatan",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2022",
+            "id": 107
+        },
+        {
+            "provinsi": "Papua Selatan",
+            "luas_panen": "44807,86",
+            "produktifitas": "40,98",
+            "produksi": "183627,83",
+            "tahun": "2023",
+            "id": 108
+        },
+        {
+            "provinsi": "Papua Tengah",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2021",
+            "id": 109
+        },
+        {
+            "provinsi": "Papua Tengah",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2022",
+            "id": 110
+        },
+        {
+            "provinsi": "Papua Tengah",
+            "luas_panen": "2094,2",
+            "produktifitas": "44,28",
+            "produksi": "9273,22",
+            "tahun": "2023",
+            "id": 111
+        },
+        {
+            "provinsi": "Papua Pegunungan",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2021",
+            "id": 112
+        },
+        {
+            "provinsi": "Papua Pegunungan",
+            "luas_panen": "0",
+            "produktifitas": "0",
+            "produksi": "0",
+            "tahun": "2022",
+            "id": 113
+        },
+        {
+            "provinsi": "Papua Pegunungan",
+            "luas_panen": "14,14",
+            "produktifitas": "43,59",
+            "produksi": "61,63",
+            "tahun": "2023",
+            "id": 114
+        },
+        {
+            "id": 115,
+            "provinsi": "Aceh",
+            "luas_panen": 297058.38,
+            "produktifitas": 55.03,
+            "produksi": "1634639,6",
+            "tahun": 2021
+        },
+        {
+            "id": 122,
+            "provinsi": "Aceh",
+            "luas_panen": 56778,
+            "produktifitas": 2323,
+            "produksi": 131895294,
+            "tahun": 2024
+        },
+        {
+            "id": 123,
+            "provinsi": "Jawa Barat",
+            "luas_panen": 34521,
+            "produktifitas": 234,
+            "produksi": 8077914,
+            "tahun": 2024
+        }
+    ]
+}

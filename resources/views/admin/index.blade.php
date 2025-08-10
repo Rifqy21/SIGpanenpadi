@@ -19,7 +19,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
+                    <h3>
+                        Statistik Panen Padi
+                    </h3>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -30,327 +32,79 @@
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
+
+        
         <!-- /.content-header -->
+        <!-- Kolom Info Total Provinsi -->
+<div class="row justify-content-center mb-5">
+    <div class="col-md-4 col-sm-6">
+        <div class="small-box bg-gradient-primary shadow">
+            <div class="inner text-center">
+                <h3>{{ $jumlahProvinsi }}</h3>
+                <p>Jumlah Provinsi di Indonesia</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-map-marked-alt"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
 
         <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>
-                                    {{ $luas }} <sup>Hektar</sup>
-                                </h3>
 
-                                <p>Total Luas Panen</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>
-                                    {{ $produksi }} <sup>Ton</sup>
-                                </h3>
-
-                                <p>Produksi Panen</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3 class="text-white">
-                                    {{ $produktivitas }} <sup>Ku/Ha</sup>
-                                </h3>
-
-                                <p class="text-white">Produktivitas Panen</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>{{ count($petanis) }}</h3>
-
-                                <p>Pengguna Terdaftar</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ./col -->
+        <!-- Dropdown Provinsi -->
+        <section class="chart-section bg-light" id="data_panen">
+        <div class="container">
+            <div class="row mb-2 align-items-center">
+                <div class="col-auto">
+                    <label for="provinsi" class="col-form-label">Provinsi</label>
                 </div>
-                <!-- /.row -->
+                <div class="col-3">
+                    <select name="provinsi" id="provinsi" class="form-control">
+                        @foreach ($provinsi as $p)
+                            <option value="{{ $p->nama_provinsi }}">{{ $p->nama_provinsi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <h1 class="card-title">Data Produksi Panen</h1>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                {{-- <div id="bar-chart" style="height: 300px;"></div> --}}
-                                <div class="chart">
-                                    <canvas id="barChart"
-                                        style="min-height: 300px; height: 300px; max-height: 300px;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
+       <!-- Chart Panen -->
+           <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white fw-bold">
+                            <h3>Luas Panen</h3>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <h1 class="card-title">Data Produktivitas Panen</h1>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="chart2">
-                                    <canvas id="barChart2"
-                                        style="min-height: 300px; height: 300px; max-height: 300px;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
+                        <div class="card-body">
+                            <canvas id="luasPanenChart" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <!-- Main row -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-1 mt-2">
-                                        <h1 class="card-title">Laporan Panen</h1>
-                                    </div>
-                                    <div class="col-2">
-                                        <select name="provinsi" id="provinsi" class="form-control">
-                                            <option value="semua_provinsi">Semua Provinsi</option>
-                                            @foreach ($provinsis as $prov)
-                                                <option value="{{ $prov->nama_provinsi }}">{{ $prov->nama_provinsi }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-7"></div>
-                                    <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('createDataPanen') }}" class="btn btn-primary"> <i
-                                                class="fas fa-plus"></i> Tambah
-                                            Laporan</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <th>No</th>
-                                        <th>Nama Petani</th>
-                                        <th>Nama Provinsi</th>
-                                        <th>Tanggal Dibuat</th>
-                                        <th>Terakhir Diupdate</th>
-                                        <th>Luas Panen (Ha)</th>
-                                        <th>Produksi (Ton)</th>
-                                        <th>Produktivitas (Ku/Ha)</th>
-                                        <th>Action</th>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($panens as $dataPanen)
-                                            <tr id="dataBody">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $dataPanen->petani->name }}</td>
-                                                <td>{{ $dataPanen->provinsi->nama_provinsi }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($dataPanen->created_at)) }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($dataPanen->updated_at)) }}</td>
-                                                <td>{{ $dataPanen->luas_panen }}</td>
-                                                <td>{{ $dataPanen->produksi }}</td>
-                                                <td>{{ $dataPanen->produktivitas }}</td>
-                                                <td>
-                                                    <a href="{{ route('admin.panen.show', $dataPanen->id) }}"
-                                                        class="btn btn-primary">Detail</a>
-                                                    <a href="{{ route('admin.panen.edit', $dataPanen->id) }}"
-                                                        class="btn btn-warning">Edit</a>
-                                                    <form action="{{ route('admin.panen.delete', $dataPanen->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white fw-bold">
+                            <h3>Produksi Panen</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="produksiPanenChart" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <!-- Main row -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-
-                                    <h1 class="card-title">Peta Sebaran Lokasi Panen Petani</h1>
-
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div id = "map" style = "width: 100%; height: 800px"></div>
-                            </div>
-                            <!-- /.card-body -->
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white fw-bold">
+                            <h3>Produktivitas Panen</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="produktifitasPanenChart" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-1 mt-2">
-                                        <h1 class="card-title">Data Pengguna</h1>
-                                    </div>
-                                    <div class="col-2">
-                                    </div>
-                                    <div class="col-7"></div>
-                                    <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary"> <i
-                                                class="fas fa-plus"></i> Tambah
-                                            Pengguna</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-striped">
-                                    <thead>
-                                        <th>No</th>
-                                        <th>Nama Pengguna</th>
-                                        <th>Email Pengguna</th>
-                                        <th>Tanggal Dibuat</th>
-                                        <th>Terakhir Diupdate</th>
-                                        <th>Peran</th>
-                                        <th>Action</th>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($petanis as $petani)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $petani->name }}</td>
-                                                <td>{{ $petani->email }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($petani->created_at)) }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($petani->updated_at)) }}</td>
-                                                <td>{{ $petani->role }}</td>
-                                                <td>
-                                                    <a href="{{ route('admin.user.edit', $petani->id) }}"
-                                                        class="btn btn-warning">Edit</a>
-                                                    <form action="{{ route('admin.user.delete', $petani->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</button>
-                                                    </form>
-                                                    {{-- change password --}}
-                                                    <button data-toggle="modal"
-                                                        data-target="#changePasswordModal{{ $petani->id }}"
-                                                        class="btn btn-info">Ganti Password</button>
-                                                </td>
-                                            </tr>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade " id="changePasswordModal{{ $petani->id }}"
-                                                tabindex="-1" aria-labelledby="changePasswordModalLabel"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="changePasswordModalLabel">Ganti
-                                                                Password</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form
-                                                                action="{{ route('admin.user.change-password.update', $petani->id) }}"
-                                                                method="POST">
-                                                                @method('PUT')
-                                                                @csrf
-                                                                <div
-                                                                    class="form-group
-                                                                ">
-                                                                    <label for="password">Password Baru</label>
-                                                                    <input type="password" class="form-control"
-                                                                        id="password{{ $petani->id }}" name="password"
-                                                                        required>
-                                                                </div>
-                                                                <div
-                                                                    class="form-group
-                                                            ">
-                                                                    <label for="password_confirmation">Konfirmasi Password
-                                                                        Baru</label>
-                                                                    <input type="password" class="form-control"
-                                                                        id="password_confirmation{{ $petani->id }}"
-                                                                        name="password_confirmation" required>
-                                                                </div>
-                                                                <button type="submit" class="btn btn-primary">Ganti
-                                                                    Password</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- /.row (main row) -->
-            </div><!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
-
-
-    </div>
-    <!-- /.content-wrapper -->
+       
+</section>
 @endsection
 
 @section('scripts')
@@ -366,280 +120,191 @@
     <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/flot/jquery.flot.js') }}"></script>
+    <script src="{{ asset('assets/plugins/flot/plugins/jquery.flot.resize.js') }}"></script>
+    <script src="{{ asset('assets/plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+      
+   
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @if (session('info'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                title: 'Informasi',
+                body: '{{ session('info') }}'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'Gagal',
+                body: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Gagal',
+                    body: '{{ $error }}'
+                });
+            @endforeach
+        </script>
+    @endif
 
+<script>
+        $('#provinsi').select2({
+            placeholder: 'Pilih Provinsi',
+        });
+        $('#provinsi').on('change', function() {
+            getChart();
+        });
+    </script>
+
+    <!-- Custom JS -->
     <script>
         $(document).ready(function() {
-            // Initialize DataTable
-            var table = $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": [{
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: ':not(:last-child)' // Exclude last column (Action)
-                        }
-                    },
-                    {
-                        extend: 'csv',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
+            $('#world-map').vectorMap({
+                map: 'indonesia_id',
+                backgroundColor: 'transparent',
+                regionStyle: {
+                    initial: {
+                        fill: '#c4c4c4',
+                        "fill-opacity": 1,
+                        stroke: 'none',
+                        "stroke-width": 0,
+                        "stroke-opacity": 1
                     }
-                ],
-                "dom": '<"row"<"col-md-6"B><"col-md-6 text-right"f>>' +
-                    '<"row"<"col-sm-12"tr>>' +
-                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-            });
-
-            // Custom filter for Provinsi
-            $('#provinsi').on('change', function() {
-                var selectedProvinsi = $(this).val();
-                if (selectedProvinsi === 'semua_provinsi') {
-                    table.column(2).search('').draw();
-                } else {
-                    if (selectedProvinsi) {
-                        table.column(2).search('^' + selectedProvinsi + '$', true, false).draw();
-                    } else {
-                        table.column(2).search('').draw();
-                    }
+                },
+                series: {
+                    regions: [{
+                        values: {},
+                        scale: ['#C8EEFF', '#0071A4'],
+                        normalizeFunction: 'polynomial'
+                    }]
                 }
             });
-
-            var table2 = $("#example2").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": [{
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: ':not(:last-child)' // Exclude last column (Action)
-                        }
-                    },
-                    {
-                        extend: 'csv',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    }
-                ],
-                "dom": '<"row"<"col-md-6"B><"col-md-6 text-right"f>>' +
-                    '<"row"<"col-sm-12"tr>>' +
-                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-            });
-
+            getChart();
         });
     </script>
     <script>
-        const dataProduksi = @json($bar_data);
-        const bar_produktivitas = @json($bar_produktivitas);
+    // Variabel global chart supaya bisa di-destroy saat update data
+    let luasPanenChart, produksiPanenChart, produktifitasPanenChart;
 
+    function getChart() {
+        const provinsi = $('#provinsi').val();
 
-        var bar_data_new = {
-            labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
-                'Nov', 'Des'
-            ],
-            datasets: [{
-                label: 'Produksi Panen',
-                backgroundColor: 'rgba(60,141,188,0.9)',
-                borderColor: 'rgba(60,141,188,0.8)',
-                pointRadius: false,
-                pointColor: '#3b8bba',
-                pointStrokeColor: 'rgba(60,141,188,1)',
-                pointHighlightFill: '#fff',
-                pointHighlightStroke: 'rgba(60,141,188,1)',
-                data: dataProduksi
-            }]
-        }
+        // Ambil data dari PHP ke JS (pastikan sudah ada di blade)
+        const dataBps = {!! json_encode($dataBps) !!};
 
-        var barChartCanvas = $('#barChart').get(0).getContext('2d')
-        var barChartData = jQuery.extend(true, {}, bar_data_new)
-        var temp0 = barChartData
+        // Filter data berdasarkan provinsi yang dipilih
+        const dataFiltered = dataBps.filter(d => d.provinsi === provinsi);
 
-        var barChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false
-        }
+        // Map dan parse data agar numerik dan siap dipakai chart
+        const data = dataFiltered.map(d => ({
+            ...d,
+            luas_panen: parseInt(d.luas_panen) || 0,
+            produksi: parseInt(d.produksi) || 0,
+            produktifitas: parseFloat(
+                (d.produktifitas || d.produktifitas || '0').toString().replace(',', '.')
+            ) || 0,
+            tahun: d.tahun
+        }));
 
-        new Chart(barChartCanvas, {
-            type: 'bar',
-            data: barChartData,
-            options: barChartOptions
-        })
+        // Ambil context canvas chart
+        const ctxLuas = document.getElementById('luasPanenChart').getContext('2d');
+        const ctxProduksi = document.getElementById('produksiPanenChart').getContext('2d');
+        const ctxProduktifitas = document.getElementById('produktifitasPanenChart').getContext('2d');
 
-        var bar_data_new = {
-            labels: ['Jan', 'Feb', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agust', 'Sept', 'Okt',
-                'Nov', 'Des'
-            ],
-            datasets: [{
-                label: 'Produktivitas Panen',
-                backgroundColor: 'rgba(60,141,188,0.9)',
-                borderColor: 'rgba(60,141,188,0.8)',
-                pointRadius: false,
-                pointColor: '#3b8bba',
-                pointStrokeColor: 'rgba(60,141,188,1)',
-                pointHighlightFill: '#fff',
-                pointHighlightStroke: 'rgba(60,141,188,1)',
-                data: bar_produktivitas
-            }]
-        }
+        // Destroy chart lama jika sudah ada, agar tidak bertumpuk
+        if (luasPanenChart) luasPanenChart.destroy();
+        if (produksiPanenChart) produksiPanenChart.destroy();
+        if (produktifitasPanenChart) produktifitasPanenChart.destroy();
 
-        var barChartCanvas = $('#barChart2').get(0).getContext('2d')
-        var barChartData = jQuery.extend(true, {}, bar_data_new)
-        var temp0 = barChartData
-
-        var barChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false
-        }
-
-        new Chart(barChartCanvas, {
-            type: 'bar',
-            data: barChartData,
-            options: barChartOptions
-        })
-    </script>
-    <script>
-        const panen = @json($panens);
-        const provinsis = @json($provinsis);
-        console.log(provinsis)
-        var map = L.map('map').setView([-6.200000, 106.816666], 12); // Pusatkan di Jakarta, Indonesia
-
-        // Tambahkan layer peta
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        var panenPerProvinsi = {};
-        provinsis.forEach(function(provinsi) {
-            console.log(provinsi.nama_provinsi)
-            panenPerProvinsi[provinsi.nama_provinsi] = 0;
-        });
-
-
-        // sum the total panen for each provinsi
-        panen.forEach(function(p) {
-            var provinsi = p.provinsi.nama_provinsi;
-            // sum the total panen for each provinsi p.produksi
-            panenPerProvinsi[provinsi] += parseInt(p.produksi); // dalam format ton
-        });
-
-
-        // panen.forEach(function(p) {
-        //     var provinsi = p.provinsi.nama_provinsi;
-        //     if (!panenPerProvinsi[provinsi]) {
-        //         panenPerProvinsi[provinsi] = 0;
-        //     }
-        //     // sum the total panen for each provinsi p.produksi
-        //     panenPerProvinsi[provinsi] += parseInt(p.produksi); // dalam format ton
-        // });
-
-        // remove all space in the provinsi name
-        Object.keys(panenPerProvinsi).forEach(function(provinsi) {
-            // if nama provinsi contains space trim
-            if (provinsi.includes(' ')) {
-                var newProvinsi = provinsi.replace(/\s/g, '');
-                panenPerProvinsi[newProvinsi] = panenPerProvinsi[provinsi];
-                delete panenPerProvinsi[provinsi];
+        // Buat chart Luas Panen
+        luasPanenChart = new Chart(ctxLuas, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.tahun),
+                datasets: [{
+                    label: 'Luas Panen (Ha)',
+                    data: data.map(d => d.luas_panen),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
         });
 
-
-
-
-        function getColor(jumlahPanen) {
-            if (jumlahPanen > 20) return 'green'; // produksi lebih dari 20 ton
-            else if (jumlahPanen > 10) return 'yellow'; // produksi lebih dari 10 ton
-            else if (jumlahPanen > 0) return 'red' // produksi lebih dari 1 ton
-            // if there is no data, return no color
-            else return 'none';
-        }
-
-
-        // Titik-titik koordinat yang sudah ditentukan
-        var locations = panen.map(function(panen, index) {
-            return {
-                name: 'Lokasi Panen  ' + panen.name + ' ' + panen.provinsi.nama_provinsi + ' #' + index,
-                latitude: panen.latitude,
-                longitude: panen.longitude
-            };
+        // Buat chart Produksi
+        produksiPanenChart = new Chart(ctxProduksi, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.tahun),
+                datasets: [{
+                    label: 'Produksi (Ton)',
+                    data: data.map(d => d.produksi),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
         });
 
-        // Tambahkan marker untuk setiap koordinat
-        locations.forEach(function(location) {
-            var lat = location.latitude;
-            var lng = location.longitude;
-            L.marker([lat, lng]).addTo(map)
-                .bindPopup(location.name + '<br>Latitude: ' + lat + '<br>Longitude: ' + lng);
+        // Buat chart Produktivitas
+        produktifitasPanenChart = new Chart(ctxProduktifitas, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.tahun),
+                datasets: [{
+                    label: 'Produktivitas (Ku/Ha)',
+                    data: data.map(d => d.produktifitas),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
         });
+    }
 
-        fetch('data/geo.json') // Sesuaikan dengan path file Anda
-            .then(response => response.json())
-            .then(data => {
-                // Menambahkan poligon kecamatan ke peta
-                L.geoJSON(data, {
-                    style: function(feature) {
-                        var provinsi = feature.properties.NAME_1; // Ambil nama provinsi dari GeoJSON
-                        var jumlahPanen = panenPerProvinsi[
-                            provinsi] // Ambil jumlah panen dari data panenPerProvinsi
-                        return {
-                            fillColor: getColor(jumlahPanen), // Tentukan warna berdasarkan jumlah panen
-                            weight: 1,
-                            opacity: 1,
-                            color: 'white',
-                            dashArray: '3',
-                            fillOpacity: 0.5
-                        };
-                    },
-                    onEachFeature: function(feature, layer) {
-                        // Menampilkan popup dengan informasi kecamatan dan provinsi
-                        layer.bindPopup("Kecamatan: " + feature.properties.NAME_3 + "<br>Provinsi: " +
-                            feature.properties.NAME_1 + "<br>Jumlah Panen: " + (panenPerProvinsi[feature
-                                .properties.NAME_1] + " ton" || "Data tidak tersedia"));
-                    }
-                }).addTo(map);
-            })
-            .catch(error => {
-                console.error('Error loading the GeoJSON:', error);
-            });
-    </script>
+    // Jalankan saat halaman siap dan pas dropdown provinsi berubah
+    $(document).ready(function() {
+        getChart();
+
+        $('#provinsi').on('change', function() {
+            getChart();
+        });
+    });
+</script>
 @endsection
+
+

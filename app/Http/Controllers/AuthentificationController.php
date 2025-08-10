@@ -33,7 +33,7 @@ class AuthentificationController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Register Success');
     }
 
     public function authLogin(Request $request)
@@ -51,18 +51,17 @@ class AuthentificationController extends Controller
             return redirect()->intended('/validateRole');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-    ]);
+        return back()->with('error', 'Email or Password is wrong');
     }
 
-    public function validateRole(){
+    public function validateRole()
+    {
         // if user role is 'user' then redirect to dashboard
         $user = Auth::user();
         if ($user->role == 'user') {
-            return redirect('/user');
+            return redirect('/user')->with('success', 'Login Success');
         } elseif ($user->role == 'admin') {
-            return redirect('/admin');
+            return redirect('/admin')->with('success', 'Login Success');
         }
     }
 
@@ -74,6 +73,6 @@ class AuthentificationController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('login');
     }
 }

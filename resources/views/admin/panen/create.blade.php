@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('admin.layouts.app')
 
 @section('styles')
     <!-- Leaflet -->
@@ -33,94 +33,137 @@
 
                 <!-- Main row -->
 
+               <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <h1 class="card-title">Tambah Data Panen</h1>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <form action="{{ route('insertDataPanen') }}" method="POST">
-                                    @csrf
-
-                                    <div class="form-group row">
-                                        <label for="petani" class="col-sm-2 col-form-label">Petani</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" id="petani" name="petani" required>
-                                                <option selected disabled>-- Pilih Petani --</option>
-                                                @foreach ($petani as $p)
-                                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="provinsi" class="col-sm-2 col-form-label">Provinsi</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" id="provinsi" name="provinsi" required>
-                                                <option selected disabled>-- Pilih Provinsi --</option>
-                                                @foreach ($provinsis as $prov)
-                                                    <option value="{{ $prov->id }}">{{ $prov->nama_provinsi }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="luas" class="col-sm-2 col-form-label">Luas
-                                            Panen<sub>(ha)</sub></label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="luas" name="luas"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="produktivitas"
-                                            class="col-sm-2 col-form-label">Produktivitas<sub>(ku/ha)</sub></label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="produktivitas"
-                                                name="produktivitas" readonly required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="produksi"
-                                            class="col-sm-2 col-form-label">Produksi<sub>(ton)</sub></label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="produksi" name="produksi"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Lokasi" class="col-sm-2 col-form-label">Lokasi</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" id="latitude" name="latitude"
-                                                required readonly placeholder="latitude">
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" id="longitude" name="longitude"
-                                                required readonly placeholder="longitude">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-12">
-                                            <div id="map" style="height: 600px;"></div>
-                                        </div>
-                                    </div>
-                                    {{-- button submit --}}
-                                    <div class="form-group row">
-                                        <div class="col-sm-12">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.card-body -->
+                    <h1 class="card-title">Tambah Data Panen</h1>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="{{ route('insertPanen') }}" method="POST">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="provinsi" class="col-sm-2 col-form-label">Provinsi</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="provinsi" name="provinsi" required>
+                                <option selected disabled>-- Pilih Provinsi --</option>
+                                @foreach ($provinsis as $prov)
+                                    <option value="{{ $prov->id }}">{{ $prov->nama_provinsi }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                </div>
+                    <div class="form-group row">
+                        <label for="luas" class="col-sm-2 col-form-label">Luas
+                            Panen<sub>(ha)</sub></label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="luas" name="luas" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="produktivitas"
+                            class="col-sm-2 col-form-label">Produktivitas<sub>(ku/ha)</sub></label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="produktivitas"
+                                name="produktivitas" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="produksi"
+                            class="col-sm-2 col-form-label">Produksi<sub>(ton)</sub></label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="produksi" name="produksi" required>
+                        </div>
+                    </div>
+                    
+                    {{-- BAGIAN INI YANG KURANG - INPUT KOORDINAT --}}
+                    <div class="form-group row">
+                        <label for="koordinat" class="col-sm-2 col-form-label">Koordinat Lokasi</label>
+                        <div class="col-sm-5">
+                            <input type="number" step="any" class="form-control" id="latitude" 
+                                   name="latitude" placeholder="Latitude (contoh: -6.2088)" required>
+                            <small class="form-text text-muted">Contoh: -6.2088</small>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="number" step="any" class="form-control" id="longitude" 
+                                   name="longitude" placeholder="Longitude (contoh: 106.8456)" required>
+                            <small class="form-text text-muted">Contoh: 106.8456</small>
+                        </div>
+                    </div>
+
+                    {{-- OPTIONAL: Peta untuk memilih lokasi --}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Pilih di Peta</label>
+                        <div class="col-sm-10">
+                            <div id="mapInput" style="height: 400px;"></div>
+                            <small class="form-text text-muted">Klik pada peta untuk memilih lokasi</small>
+                        </div>
+                    </div>
+
+                    {{-- button submit --}}
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+
+{{-- Script untuk map input (opsional) --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inisialisasi peta untuk input
+    var mapInput = L.map('mapInput').setView([-6.2088, 106.8456], 10);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(mapInput);
+    
+    var marker;
+    
+    // Event click pada peta
+    mapInput.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        
+        // Update input fields
+        document.getElementById('latitude').value = lat.toFixed(6);
+        document.getElementById('longitude').value = lng.toFixed(6);
+        
+        // Hapus marker lama
+        if (marker) {
+            mapInput.removeLayer(marker);
+        }
+        
+        // Tambah marker baru
+        marker = L.marker([lat, lng]).addTo(mapInput);
+    });
+    
+    // Update peta saat input manual
+    document.getElementById('latitude').addEventListener('input', updateMarker);
+    document.getElementById('longitude').addEventListener('input', updateMarker);
+    
+    function updateMarker() {
+        var lat = parseFloat(document.getElementById('latitude').value);
+        var lng = parseFloat(document.getElementById('longitude').value);
+        
+        if (!isNaN(lat) && !isNaN(lng)) {
+            if (marker) {
+                mapInput.removeLayer(marker);
+            }
+            marker = L.marker([lat, lng]).addTo(mapInput);
+            mapInput.setView([lat, lng], 10);
+        }
+    }
+});
+</script>
 
                 <!-- /.row (main row) -->
             </div><!-- /.container-fluid -->
