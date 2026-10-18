@@ -1,250 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATA PANEN</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- AdminLTE CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <!-- icon -->
+    <title>Data Panen</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon -->
     <script src="https://kit.fontawesome.com/26af10689e.js" crossorigin="anonymous"></script>
 
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}">
-    <!-- Theme style -->
+    <!-- Bootstrap 4 + AdminLTE lokal (sama seperti halaman lain) -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/dist/css/adminlte.min.css') }}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
-    <!-- summernote -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
-
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
     <style>
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            /* always on full width */
+        :root {
+            --lp-primary: #5A67D8;
+            --lp-primary-dark: #4C51BF;
+            --lp-primary-soft: #EEF0FF;
+            --lp-ink: #1A202C;
+            --lp-muted: #64748B;
+            --lp-border: #E5E7EF;
+            --lp-bg: #F8F9FD;
+        }
+
+        body.lp-body {
+            font-family: 'Inter', sans-serif;
+            color: var(--lp-ink);
+            background:
+                radial-gradient(600px 300px at 10% 0%, rgba(90, 103, 216, .14), transparent 70%),
+                radial-gradient(500px 300px at 95% 10%, rgba(139, 92, 246, .12), transparent 70%),
+                var(--lp-bg);
+            background-attachment: fixed;
             margin: 0;
-            padding: 0;
             overflow-x: hidden;
-            width: 100%;
         }
 
-        .hero-section {
-            background: #5A67D8;
-            color: white;
-            padding: 50px 0;
-            text-align: center;
-        }
-
-        .hero-section .card {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-        }
-
-        .chart-section {
-            padding: 50px 0;
-        }
-
-        .data-section {
-            padding: 50px 0;
-            overflow-x: auto;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 30px 0;
-            }
-
-            .hero-section .col-md-6 {
-                margin-bottom: 20px;
-            }
-        }
-
-        .navbar {
+        /* ---------- Navbar (sama dengan halaman lain) ---------- */
+        .lp-nav {
             position: fixed;
-            top: 30px;
-            width: 60%;
-            left: 20%;
-            right: 20%;
-            z-index: 1000;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(1100px, calc(100% - 32px));
+            z-index: 1100;
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--lp-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(90, 103, 216, .1);
+            padding: 10px 18px;
         }
 
-        @media (max-width: 768px) {
-            .navbar {
-                position: fixed;
-                top: 0;
-                width: 100%;
-                left: 0;
-                right: 0;
-                border-radius: 0;
-                z-index: 1000;
-            }
-        }
-
-        .activeCustome {
-            color: #5A67D8 !important;
-            font-weight: bold;
-        }
-
-        #home {
-            background-image: url('assets/img/landing_page/Background Image.png');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
+        .lp-brand {
             display: flex;
-            justify-content: center;
             align-items: center;
-            color: white;
-            text-align: center;
+            gap: 10px;
+            font-weight: 800;
+            color: var(--lp-ink);
+            text-decoration: none !important;
+            letter-spacing: -.01em;
         }
 
-        .decoration {
-            width: 470px;
-            height: 350px;
-            position: absolute;
-            top: -40px;
-            left: 35px;
-            border: 15px solid #6d6be9;
-            ;
+        .lp-brand .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--lp-primary), #8B5CF6);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 16px;
         }
 
-        @media (max-width: 1200px) {
-            .decoration {
-                display: none;
-            }
+        .lp-nav .nav-link {
+            color: var(--lp-muted);
+            font-weight: 600;
+            font-size: .9rem;
+            padding: 8px 14px !important;
+            border-radius: 10px;
+            transition: all .2s;
         }
 
-        #special_card {
-            /* semi transparent white */
-            background-color: rgba(255, 255, 255);
+        .lp-nav .nav-link:hover,
+        .lp-nav .nav-link.active-lp { color: var(--lp-primary); background: var(--lp-primary-soft); }
+
+        .lp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 600;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all .2s;
+            text-decoration: none !important;
+            cursor: pointer;
         }
 
-        #contact {
-            background-color: black;
-            color: white;
-            padding: 20px 0;
+        .lp-btn-primary { background: var(--lp-primary); color: #fff !important; }
+        .lp-btn-primary:hover { background: var(--lp-primary-dark); }
+        .lp-nav .lp-btn { padding: 5px 14px; font-size: .78rem; }
+
+        /* ---------- Halaman ---------- */
+        .page-wrap { padding: 110px 0 60px; }
+
+        .page-head {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .whiteCard {
-            background-color: white;
-            height: 200px;
-            margin: 10px;
-            padding: 20px;
-            width: 100%;
+        .page-head .ico {
+            flex: none;
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--lp-primary), #8B5CF6);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            box-shadow: 0 10px 25px rgba(90, 103, 216, .3);
         }
 
-        .whiteCardLong {
-            background-color: white;
-            height: 420px;
-            margin: 10px;
+        .page-head h1 {
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            margin: 0;
         }
 
-        .fi {
-            color: black;
+        .page-head p { margin: 2px 0 0; color: var(--lp-muted); font-size: .95rem; }
+
+        .panel-card {
+            background: #fff;
+            border: 1px solid var(--lp-border);
+            border-radius: 22px;
+            box-shadow: 0 20px 50px rgba(90, 103, 216, .08);
         }
 
-        .dataTables_filter {
-            text-align: right !important;
-            float: right !important;
+        /* ---------- Filter ---------- */
+        .filter-card { padding: 20px 22px; margin-bottom: 20px; }
+
+        .filter-card label {
+            display: block;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--lp-muted);
+            margin-bottom: 6px;
         }
 
+        .filter-card .form-control,
         .select2-container .select2-selection--single {
-            height: calc(2.25rem + 2px);
-            /* Tinggi default .form-control Bootstrap */
-            padding: 0.175rem 0.25rem;
-            /* Padding default dari .form-control */
+            height: 44px !important;
+            border: 1px solid var(--lp-border) !important;
+            border-radius: 12px !important;
+            font-size: .92rem;
+            font-weight: 500;
+            box-shadow: none;
+            background-color: #fff;
+        }
+
+        .filter-card .form-control:focus,
+        .select2-container--default.select2-container--focus .select2-selection--single,
+        .select2-container--default.select2-container--open .select2-selection--single {
+            border-color: var(--lp-primary) !important;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, .15);
         }
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: calc(2.25rem);
-            /* Sejajarkan teks di tengah */
+            line-height: 42px !important;
+            padding-left: 14px;
+            color: var(--lp-ink);
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow { height: 42px !important; right: 8px; }
+
+        .select2-dropdown {
+            border: 1px solid var(--lp-border) !important;
+            border-radius: 14px !important;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(90, 103, 216, .18);
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected],
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background: var(--lp-primary) !important;
+        }
+
+        .select2-search--dropdown .select2-search__field {
+            border: 1px solid var(--lp-border) !important;
+            border-radius: 10px;
+            padding: 6px 10px;
+        }
+
+        /* ---------- Tabel ---------- */
+        .table-card { padding: 22px; }
+
+        .table-card .dataTables_wrapper .row:first-child { margin-bottom: 14px; align-items: center; }
+        .table-card .dataTables_wrapper .row:last-child { margin-top: 14px; align-items: center; }
+
+        .dataTables_filter { text-align: right !important; }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info {
+            font-size: .85rem;
+            color: var(--lp-muted);
+            font-weight: 500;
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid var(--lp-border);
+            border-radius: 10px;
+            height: 38px;
+            padding: 0 12px;
+            color: var(--lp-ink);
+            background: #fff;
+            outline: none;
+            transition: all .2s;
+        }
+
+        .dataTables_wrapper .dataTables_filter input { margin-left: 8px; min-width: 220px; }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--lp-primary);
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, .15);
+        }
+
+        table.lp-table {
+            width: 100% !important;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--lp-border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 0 !important;
+        }
+
+        table.lp-table thead th {
+            background: #fff;
+            color: #111827;
+            font-size: .74rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            border: 0 !important;
+            border-bottom: 1px solid var(--lp-border) !important;
+            padding: 14px 16px;
+            white-space: nowrap;
+        }
+
+        table.lp-table tbody td {
+            border: 0;
+            border-bottom: 1px solid var(--lp-border);
+            padding: 13px 16px;
+            font-size: .9rem;
+            vertical-align: middle;
+        }
+
+        table.lp-table tbody tr:last-child td { border-bottom: 0; }
+        table.lp-table tbody tr:nth-child(even) td { background: #FAFBFF; }
+        table.lp-table tbody tr:hover td { background: var(--lp-primary-soft); }
+
+        table.lp-table td.col-prov { font-weight: 600; }
+        table.lp-table td.col-num,
+        table.lp-table th.col-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+        .badge-tahun {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 999px;
+            background: var(--lp-primary-soft);
+            color: var(--lp-primary-dark);
+            font-size: .78rem;
+            font-weight: 700;
+        }
+
+        /* Panah urut DataTables */
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_desc:after { color: #111827; }
+
+        /* Paginasi */
+        .dataTables_wrapper .pagination { margin: 0; gap: 4px; justify-content: flex-end; flex-wrap: wrap; }
+
+        .dataTables_wrapper .page-item .page-link {
+            border: 1px solid var(--lp-border);
+            border-radius: 10px !important;
+            color: var(--lp-muted);
+            font-size: .85rem;
+            font-weight: 600;
+            padding: 7px 13px;
+            margin: 0;
+            background: #fff;
+        }
+
+        .dataTables_wrapper .page-item .page-link:hover { color: var(--lp-primary); border-color: var(--lp-primary); background: var(--lp-primary-soft); }
+
+        .dataTables_wrapper .page-item.active .page-link {
+            background: var(--lp-primary);
+            border-color: var(--lp-primary);
+            color: #fff;
+        }
+
+        .dataTables_wrapper .page-item.disabled .page-link { opacity: .5; background: #fff; }
+
+        table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+        table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before { background-color: var(--lp-primary); }
+
+        @media (max-width: 991px) {
+            .lp-nav { top: 10px; padding: 8px 14px; }
+            .lp-nav .navbar-collapse { padding: 12px 0 6px; }
+        }
+
+        @media (max-width: 767px) {
+            .page-wrap { padding-top: 90px; }
+            .filter-card, .table-card { padding: 16px; }
+            .dataTables_filter { text-align: left !important; margin-top: 10px; }
+            .dataTables_wrapper .dataTables_filter input { min-width: 0; width: calc(100% - 70px); }
+            .dataTables_wrapper .pagination { justify-content: flex-start; margin-top: 10px; }
         }
     </style>
 </head>
 
-<body>
+<body class="lp-body">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold @if (request()->is('/')) activeCustome @endif"
-                            href="{{ route('landing-page') }}">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold @if (request()->is('dataPanen')) activeCustome @endif"
-                            href="{{ route('data-panen') }}">DATA PANEN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold @if (request()->is('bpsMaps')) activeCustome @endif"
-                            href="{{ route('bps-maps') }}">PETA</a>
-                    </li>
-                </ul>
-                    <li class="navbar-nav ml-auto">
-                        <a class="nav-link btn btn-primary text-white" href="{{ route('login') }}">Login</a>
-                    </li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg lp-nav">
+        <a class="lp-brand" href="{{ route('landing-page') }}">
+            <span class="logo"><i class="fas fa-wheat-awn"></i></span>
+            SIG Panen Padi
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#lpNav"
+            aria-controls="lpNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="lpNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link @if (request()->is('/')) active-lp @endif"
+                        href="{{ route('landing-page') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (request()->is('dataPanen') || request()->is('data-panen')) active-lp @endif"
+                        href="{{ route('data-panen') }}">Data Panen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (request()->is('bpsMaps')) active-lp @endif"
+                        href="{{ route('bps-maps') }}">Peta</a>
+                </li>
+            </ul>
+            <a class="lp-btn lp-btn-primary" href="{{ route('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
         </div>
     </nav>
 
-
-    <!-- Chart Section -->
-    <section class="chart-section bg-light" id="data_panen" style="margin-top: 100px;">
+    <!-- Konten -->
+    <main class="page-wrap" id="data_panen">
         <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Data Panen Padi</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="provinsi">Provinsi</label>
-                                <select name="provinsi" id="provinsi" class="form-control">
-                                    <option value="">Pilih Provinsi</option>
-                                    @foreach ($provinsi as $item)
-                                        <option value="{{ $item->nama_provinsi }}">{{ $item->nama_provinsi }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
+            <div class="page-head">
+                <div>
+                    <h1>Data Panen Padi</h1>
+                    <p>Luas panen, produktivitas, dan produksi padi per provinsi.</p>
+                </div>
+            </div>
+
+            <!-- Filter -->
+            <div class="panel-card filter-card">
+                <div class="row align-items-end">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="form-group mb-0">
+                            <label for="provinsi">Provinsi</label>
+                            <select name="provinsi" id="provinsi" class="form-control">
+                                <option value="">Pilih Provinsi</option>
+                                @foreach ($provinsi as $item)
+                                    <option value="{{ $item->nama_provinsi }}">{{ $item->nama_provinsi }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                        <form method="GET" action="{{ route('data-panen') }}">
-                        <div class="row">
-                            <div class="col-9"></div>
-                            <div class="col-1 mt-2 text-end pr-0">
-                            <label for="provinsi">Filter Tahun</label>
-                            </div>
-                            <div class="col-2">
+                    <div class="col-md-3 ml-md-auto">
+                        <form method="GET" action="{{ route('data-panen') }}" class="mb-0">
+                            <div class="form-group mb-0">
+                                <label for="tahun">Filter Tahun</label>
                                 <select name="tahun" id="tahun" class="form-control" onchange="this.form.submit()">
                                     <option value="semua_tahun" {{ request('tahun') == 'semua_tahun' ? 'selected' : '' }}>Semua Tahun</option>
                                     @foreach ($tahunList as $t)
@@ -252,127 +413,73 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-                    </form>
-
-
-                    <div class="row">
-                        <div class="col-12">
-                            {{-- table --}}
-                            <div class="table-responsive">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Provinsi</th>
-                                            <th>Luas Panen</th>
-                                            <th>Produktivitas</th>
-                                            <th>Produksi</th>
-                                            <th>Tahun</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($dataBps as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item['provinsi'] }}</td>
-                                                <td>{{ $item['luas_panen'] }}</td>
-                                                <td>{{ $item['produktifitas'] }}</td>
-                                                <td>{{ $item['produksi'] }}</td>
-                                                <td>{{ $item['tahun'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            <!-- Tabel -->
+            <div class="panel-card table-card">
+                <div class="table-responsive">
+                    <table id="example1" class="table lp-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Provinsi</th>
+                                <th class="col-num">Luas Panen</th>
+                                <th class="col-num">Produktivitas</th>
+                                <th class="col-num">Produksi</th>
+                                <th>Tahun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dataBps as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="col-prov">{{ $item['provinsi'] }}</td>
+                                    <td class="col-num">{{ $item['luas_panen'] }}</td>
+                                    <td class="col-num">{{ $item['produktifitas'] }}</td>
+                                    <td class="col-num">{{ $item['produksi'] }}</td>
+                                    <td><span class="badge-tahun">{{ $item['tahun'] }}</span></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- AdminLTE JS -->
-    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-
+    <!-- Scripts -->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- ChartJS -->
-    <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
-    <!-- Sparkline -->
-    <script src="{{ asset('assets/plugins/sparklines/sparkline.js') }}"></script>
-    <!-- JQVMap -->
-    <script src="{{ asset('assets/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jqvmap/maps/jquery.vmap.indonesia.js') }}"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
-    <!-- daterangepicker -->
-    <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-    <!-- Summernote -->
-    <script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js') }}"></script>
-    <!-- overlayScrollbars -->
-    <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-    <!-- AdminLTE App -->
     <script src="{{ asset('assets/plugins/dist/js/adminlte.js') }}"></script>
-    <script src="{{ asset('assets/plugins/dist/js/pages/dashboard.js') }}"></script>
-    <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @if (session('success'))
         <script>
-            $(document).Toasts('create', {
-                class: 'bg-success',
-                title: 'Sukses',
-                body: '{{ session('success') }}'
-            });
+            $(document).Toasts('create', { class: 'bg-success', title: 'Sukses', body: @json(session('success')) });
         </script>
     @endif
     @if (session('info'))
         <script>
-            $(document).Toasts('create', {
-                class: 'bg-info',
-                title: 'Informasi',
-                body: '{{ session('info') }}'
-            });
+            $(document).Toasts('create', { class: 'bg-info', title: 'Informasi', body: @json(session('info')) });
         </script>
     @endif
     @if (session('error'))
         <script>
-            $(document).Toasts('create', {
-                class: 'bg-danger',
-                title: 'Gagal',
-                body: '{{ session('success') }}'
-            });
+            $(document).Toasts('create', { class: 'bg-danger', title: 'Gagal', body: @json(session('error')) });
         </script>
     @endif
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)
-                $(document).Toasts('create', {
-                    class: 'bg-danger',
-                    title: 'Gagal',
-                    body: '{{ $error }}'
-                });
+                $(document).Toasts('create', { class: 'bg-danger', title: 'Gagal', body: @json($error) });
             @endforeach
         </script>
     @endif
@@ -380,8 +487,10 @@
     <script>
         $('#provinsi').select2({
             placeholder: 'Pilih Provinsi',
+            width: '100%'
         });
-        // datatable with provinsi as filter
+
+        // datatable dengan provinsi sebagai filter
         $(document).ready(function() {
             const table = $('#example1').DataTable({
                 "paging": true,
@@ -391,39 +500,30 @@
                 "info": true,
                 "autoWidth": true,
                 "responsive": true,
+                "language": {
+                    "search": "Cari:",
+                    "searchPlaceholder": "Ketik untuk mencari...",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "info": "Menampilkan _START_–_END_ dari _TOTAL_ data",
+                    "infoEmpty": "Tidak ada data",
+                    "infoFiltered": "(disaring dari _MAX_ data)",
+                    "zeroRecords": "Data tidak ditemukan",
+                    "paginate": { "first": "Awal", "last": "Akhir", "next": "›", "previous": "‹" }
+                }
             });
 
             $('#provinsi').on('change', function() {
                 const selectedProvinsi = $(this).val(); // Mendapatkan nilai provinsi yang dipilih
-                console.log(selectedProvinsi);
-                // Terapkan filter berdasarkan provinsi yang dipilih
+                // Terapkan filter berdasarkan provinsi yang dipilih (kolom 1 = Provinsi)
                 if (selectedProvinsi) {
-                    table.column(1).search('^' + selectedProvinsi + '$', true, false)
-                .draw(); // Kolom 0 adalah kolom provinsi
+                    const aman = selectedProvinsi.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    table.column(1).search('^' + aman + '$', true, false).draw();
                 } else {
-                    table.column(1).search('')
-                .draw(); // Kosongkan filter jika tidak ada provinsi yang dipilih
+                    table.column(1).search('').draw(); // Kosongkan filter jika tidak ada provinsi yang dipilih
                 }
             });
-
         });
-
-        
-         $('#tahun').on('change', function() {
-                var selectedTahun = $(this).val();
-                if (selectedTahun === 'semua_tahun') {
-                    table.column(5).search('').draw();
-                } else {
-                    if (selectedTahun) {
-                        table.column(5).search('^' + selectedTahun + '$', true, false).draw();
-                    } else {
-                        table.column(5).search('').draw();
-                    }
-                }
-            });
-
-
-        
     </script>
 </body>
+
 </html>

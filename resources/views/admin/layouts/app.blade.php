@@ -43,12 +43,11 @@
         <!-- Navbar -->
         @include('admin.layouts.navbar')
         <!-- /.navbar -->
+
         <!-- Main Sidebar Container -->
         @include('admin.layouts.sidebar')
 
         @yield('content')
-
-        
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -88,36 +87,106 @@
     <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/plugins/dist/js/adminlte.js') }}"></script>
-    <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
-    @if (session('success'))
+
+    <!-- ========== Notifikasi (SweetAlert2, tertutup otomatis) ========== -->
+    @php
+        $toastType = null;
+        $toastTitle = null;
+        $toastMsg = null;
+
+        if (session('success')) {
+            $toastType = 'success'; $toastTitle = 'Berhasil'; $toastMsg = session('success');
+        } elseif (session('info')) {
+            $toastType = 'info'; $toastTitle = 'Informasi'; $toastMsg = session('info');
+        } elseif (session('error')) {
+            $toastType = 'error'; $toastTitle = 'Gagal'; $toastMsg = session('error');
+        } elseif ($errors->any()) {
+            $toastType = 'error'; $toastTitle = 'Gagal'; $toastMsg = $errors->first();
+        }
+    @endphp
+
+    @if ($toastType)
+        <style>
+            .pm-toast {
+                border-radius: 14px !important;
+                box-shadow: 0 12px 30px rgba(15, 23, 42, .15) !important;
+                padding: 12px 16px !important;
+                font-family: 'Source Sans Pro', 'Inter', sans-serif !important;
+                border: 1px solid #E5E7EF;
+                width: 340px !important;
+            }
+
+            .pm-toast .swal2-title {
+                font-size: .9rem !important;
+                font-weight: 700 !important;
+                color: #1A202C !important;
+                margin: 0 !important;
+                text-align: left !important;
+                padding: 0 !important;
+            }
+
+            .pm-toast .swal2-html-container {
+                font-size: .8rem !important;
+                color: #64748B !important;
+                margin: 2px 0 0 !important;
+                padding: 0 !important;
+                text-align: left !important;
+            }
+
+            .pm-toast .swal2-icon {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px;
+                margin: 0 12px 0 0 !important;
+                border-width: 2px !important;
+            }
+
+            .pm-toast .swal2-icon .swal2-icon-content {
+                font-size: .95rem !important;
+            }
+
+            .pm-toast .swal2-timer-progress-bar-container {
+                height: 3px !important;
+                background: #EEF0FF !important;
+            }
+
+            .pm-toast .swal2-timer-progress-bar {
+                background: #5A67D8 !important;
+            }
+
+            .pm-toast .swal2-close {
+                font-size: 1.2rem !important;
+                color: #94A3B8 !important;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            $(document).Toasts('create', {
-                class: 'bg-success',
-                title: 'Sukses',
-                body: '{{ session('success') }}'
-            });
-        </script>
-    @endif
-    @if (session('error'))
-        <script>
-            $(document).Toasts('create', {
-                class: 'bg-danger',
-                title: 'Gagal',
-                body: '{{ session('success') }}'
-            });
-        </script>
-    @endif
-    @if ($errors->any())
-        <script>
-            @foreach ($errors->all() as $error)
-                $(document).Toasts('create', {
-                    class: 'bg-danger',
-                    title: 'Gagal',
-                    body: '{{ $error }}'
+            (function () {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showCloseButton: true,
+                    customClass: { popup: 'pm-toast' },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer);
+                        toast.addEventListener('mouseleave', Swal.resumeTimer);
+                    }
                 });
-            @endforeach
+
+                Toast.fire({
+                    icon: @json($toastType),
+                    title: @json($toastTitle),
+                    text: @json($toastMsg)
+                });
+            })();
         </script>
     @endif
+    <!-- ========== /Notifikasi ========== -->
+
     @yield('scripts')
 </body>
 
